@@ -39,7 +39,6 @@ export class CreateProductApplication {
       return CustomResponse.ok(createProductResponse, "Success message");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.log(`errorMessage: `, errorMessage);
       return CustomResponse.badRequest(`CreateProductApplication - ${errorMessage}`);
     }
   }
