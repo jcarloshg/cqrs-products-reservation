@@ -7,12 +7,26 @@ const ProductSchema = z.object({
     description: z.string(),
     sku: z.string(),
 });
-
 export type Product = z.infer<typeof ProductSchema>;
 
-const ProductToCreateScheme = ProductSchema.omit({ uuid: true });
-export type ProductToCreate = z.infer<typeof ProductToCreateScheme>;
+// ─────────────────────────────────────
+// Create
+// ─────────────────────────────────────
+const ProductToCreateScheme = z.object({
+    uuid: z.uuid(),
+    name: z.string(),
+    description: z.string(),
+    sku: z.string(),
+})
+const ProductToCreate = ProductToCreateScheme.omit({ uuid: true })
+export type ProductToCreate = z.infer<typeof ProductToCreate>;
+const ProductToCreateRepo = ProductToCreateScheme;
+export type ProductToCreateRepo = z.infer<typeof ProductToCreateRepo>;
 
+
+// ─────────────────────────────────────
+// Create
+// ─────────────────────────────────────
 export type ProductToRead = Product;
 export type ProductToUpdate = Product;
 export type ProductToDelete = Product;

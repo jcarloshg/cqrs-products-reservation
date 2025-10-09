@@ -1,5 +1,5 @@
-import { Product, ProductToCreate } from "../models/product.model";
+import { Product, ProductToCreateRepo } from "../models/product.model";
 
 export interface CreateProductRepository {
-  run(data: ProductToCreate): Promise<Product>;
+  run(data: ProductToCreateRepo): Promise<Product>;
 }

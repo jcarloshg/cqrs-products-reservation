@@ -1,31 +1,46 @@
-import { Product } from "@/app/product/domain/models/product.model";
+import { randomUUID } from "crypto"
+
+import {
+  Product,
+  ProductToCreateRepo,
+  ProductValidator,
+} from "@/app/product/domain/models/product.model";
 import { CreateProductRepository } from "@/app/product/domain/repository/create-product.repository";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 
 export interface CreateProductRequest {
-    data: { [key: string]: any };
+  data: { [key: string]: any };
 }
 
 export interface CreateProductResponse {
-    entityCreated: Product
+  entityCreated: Product;
 }
 
 export class CreateProductApplication {
   constructor(
     private readonly createProductRepository: CreateProductRepository
-  ) {}
+  ) { }
 
   public async run(
     request: CreateProductRequest
   ): Promise<CustomResponse<CreateProductResponse | undefined>> {
     try {
-      // ─────────────────────────────────────
-      // add business logic here
-      // ─────────────────────────────────────
-
-      return CustomResponse.ok(undefined, "Success message");
+      const productToCreate = ProductValidator.toCreate(request.data);
+      const productToCreateRepo: ProductToCreateRepo = {
+        uuid: randomUUID(),
+        name: productToCreate.name,
+        description: productToCreate.description,
+        sku: productToCreate.sku,
+      };
+      const productCreated = await this.createProductRepository.run(productToCreateRepo);
+      const createProductResponse: CreateProductResponse = {
+        entityCreated: productCreated,
+      };
+      return CustomResponse.ok(createProductResponse, "Success message");
     } catch (error) {
-      return CustomResponse.badRequest("Error message");
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.log(`errorMessage: `, errorMessage);
+      return CustomResponse.badRequest(`CreateProductApplication - ${errorMessage}`);
     }
   }
 }

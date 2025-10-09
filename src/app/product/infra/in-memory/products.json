@@ -1,0 +1,14 @@
+[
+  {
+    "uuid": "42e50588-8f4e-4e9c-83bd-02c0884bc779",
+    "name": "Product Name",
+    "description": "Product Description",
+    "sku": "Product SKU"
+  },
+  {
+    "uuid": "bf73517d-fad3-4372-965d-bcf9e64229a1",
+    "name": "Product Name",
+    "description": "Product Description",
+    "sku": "Product SKU"
+  }
+]
