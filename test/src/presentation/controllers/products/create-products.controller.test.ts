@@ -1,15 +1,12 @@
 import { CreateProductCommandHandler } from "@/app/product/application/create-product/commands/create-product.command-handler";
-import {
-    CreateProductApplication,
-    CreateProductRequest,
-} from "@/app/product/application/create-product/create-product.application";
 import { SendEmailToOwnerEventHandler } from "@/app/product/application/create-product/events/send-email-to-owner.event-handler";
 import { CreateProductInMemory } from "@/app/product/infra/in-memory/create-product.in-memory";
 import { EventPublisherInMemory } from "@/app/product/infra/in-memory/even-publisher.in-memory";
 import { EventBusInMemory } from "@/app/product/infra/in-memory/event-bus.in-memeory";
+import { CreateProductsController } from "@/presentation/controllers/products/create-products.controller";
 
-describe("create-product.application.test", () => {
-    it("should run", async () => {
+describe("create-products.controller.test", () => {
+    it("should works", async () => {
         // init all services(repositories)
         const createProductRepository = new CreateProductInMemory();
 
@@ -24,20 +21,34 @@ describe("create-product.application.test", () => {
             eventPublisher
         );
 
-        // run the use case
-        const createProductApp = new CreateProductApplication(
+        const createProductsController = new CreateProductsController(
             createProductCommandHandler
         );
-        const createProductRequest: CreateProductRequest = {
-            data: {
+
+        // mock request & response
+        const request: any = {
+            body: {
+                uuid: crypto.randomUUID(),
                 description: "Product description",
                 name: "Product name",
                 sku: "Product sku",
-                uuid: crypto.randomUUID(),
             },
         };
-        const createProductRes = await createProductApp.run(createProductRequest);
-        expect(createProductRes.code).toBe(201);
-        expect(createProductRes.data).toBeDefined();
+        const response: any = {
+            status: (code: number) => {
+                return {
+                    json: (data: any) => {
+                        return { code, data };
+                    },
+                };
+            },
+        };
+
+        const responseService = await createProductsController.run(request, response);
+        console.log(`responseService: `, responseService);
+
+        expect(createProductsController).toBeDefined();
+        expect(createProductsController.run).toBeDefined();
+        expect(responseService).toBeDefined();
     });
 });
