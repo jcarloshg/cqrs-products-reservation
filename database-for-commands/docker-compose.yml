@@ -1,6 +1,6 @@
 services:
-  db-sql-in-database:
-    container_name: db-sql-in-database
+  db-commands-service:
+    container_name: db-commands-service
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,16 +11,14 @@ services:
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=pattern_criteria_db
     volumes:
-      - database-volume:/var/lib/postgresql/data
-      - ./migrations/2025-09-30/01.create-database.UP.sql:/docker-entrypoint-initdb.d/01.create-database.UP.sql
-      - ./migrations/2025-09-30/02.insert-products.UP.sql:/docker-entrypoint-initdb.d/02.insert-products.UP.sql
+      - db-commands-vol:/var/lib/postgresql/data
 
   pdAdmin:
     image: dpage/pgadmin4
     container_name: pgadmin4
     restart: always
     depends_on:
-      - db-sql-in-database
+      - db-commands-service
     ports:
       - 8080:80
     environment:
@@ -34,9 +32,9 @@ services:
       - ./pgadmin:/pgadmin4/servers.json
 
 volumes:
-  database-volume:
+  db-commands-vol:
     driver: local
     driver_opts:
       type: none
-      device: ./../../database-volume
+      device: ./../../db-commands-vol
       o: bind

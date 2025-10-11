@@ -17,6 +17,7 @@
 
 - uuid: string
 - productUuid: string
+- availableQuantity:number
 - reservedQuantity: number
 
 ## Reservations
