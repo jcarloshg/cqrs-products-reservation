@@ -1,5 +1,11 @@
 # Strcuture DB
 
+## User
+
+- uuid: string
+- userName:string
+- password: string
+
 ## Product
 
 - uuid: string
@@ -16,7 +22,7 @@
 ## Reservations
 
 - uuid: string
-- ownerUuid: string
+- userUuid: string
 - productId: string
 - quantity: number
 - status: "PENDING" |"CONFIRMED" |"CANCELLED" |"EXPIRED"
