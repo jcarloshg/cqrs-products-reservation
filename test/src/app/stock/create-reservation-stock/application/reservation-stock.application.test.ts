@@ -1,4 +1,4 @@
-import { EventPublisherInMemory } from "@/app/product/infra/in-memory/even-publisher.in-memory";
+import { EventPublisherInMemory } from "@/app/shared/infrastructure/in-memory/even-publisher.in-memory";
 import { EventBusInMemory } from "@/app/shared/infrastructure/in-memory/event-bus.in-memeory";
 import { OpenFilesInMemory } from "@/app/shared/infrastructure/in-memory/open-files.in-memory";
 import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command-hanlder";
@@ -22,7 +22,7 @@ describe("reservation-stock.application.test", () => {
         // init event handlers
         const eventBus = new EventBusInMemory();
         eventBus.subscribe(
-            CreateReservationStockDomainEvent.eventName,
+            "RESERVATION-STOCK.CREATED",
             new SendNotificationEventHandler()
         );
         const eventPublisher = new EventPublisherInMemory(eventBus);
@@ -33,6 +33,8 @@ describe("reservation-stock.application.test", () => {
                 createReservationStock,
                 eventPublisher
             );
+
+        // run the use case
         const reservationStockApplication = new ReservationStockApplication(
             createReservationStockCommandHandler
         );

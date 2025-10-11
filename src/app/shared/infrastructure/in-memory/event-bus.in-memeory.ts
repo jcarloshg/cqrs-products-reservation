@@ -14,7 +14,7 @@ export class EventBusInMemory implements EventBus {
     }
 
     public async publish(event: DomainEvent): Promise<void> {
-        const handlers = this.handlers.get(event._eventName);
+        const handlers = this.handlers.get(event.eventName);
         if (handlers) {
             for (const handler of handlers) {
                 await handler.handle(event);

@@ -8,7 +8,7 @@ export interface CreateProductDomainEventProps {
 }
 
 export class CreateProductDomainEvent extends DomainEvent {
-    public readonly _eventName = "product.created";
+    public readonly eventName = "product.created";
     public readonly uuid: string;
     public readonly name: string;
     public readonly description: string;

@@ -2,7 +2,7 @@ import { DomainEvent } from "@/app/shared/domain/domain-events/domain-event";
 import { ReservationStockProps } from "./entities/reservation-stock.entity";
 
 export class CreateReservationStockDomainEvent extends DomainEvent {
-    public _eventName: string = "RESERVATION-STOCK.CREATED";
+    public eventName: string = "RESERVATION-STOCK.CREATED";
     private readonly _props: ReservationStockProps;
 
     constructor(props: ReservationStockProps) {
