@@ -1,0 +1,42 @@
+services:
+  db-sql-in-database:
+    container_name: db-sql-in-database
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=pattern_criteria_db
+    volumes:
+      - database-volume:/var/lib/postgresql/data
+      - ./migrations/2025-09-30/01.create-database.UP.sql:/docker-entrypoint-initdb.d/01.create-database.UP.sql
+      - ./migrations/2025-09-30/02.insert-products.UP.sql:/docker-entrypoint-initdb.d/02.insert-products.UP.sql
+
+  pdAdmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    depends_on:
+      - db-sql-in-database
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=alumno@google.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    user: "$UID:$GID"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+      - ./pgadmin:/certs/server.cert
+      - ./pgadmin:/certs/server.key
+      - ./pgadmin:/pgadmin4/servers.json
+
+volumes:
+  database-volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./../../database-volume
+      o: bind
