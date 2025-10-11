@@ -1,0 +1,22 @@
+[
+    {
+        "uuid": "1ad8f354-d1f8-4957-8322-1cf7eeb5e0a9",
+        "username": "Andree",
+        "password": "Andree123"
+    },
+    {
+        "uuid": "fed9fa9a-8a60-4089-8214-e9442a987118",
+        "username": "John",
+        "password": "John123"
+    },
+    {
+        "uuid": "2f844234-f862-40de-bc37-88bbddb65794",
+        "username": "Jane",
+        "password": "Jane123"
+    },
+    {
+        "uuid": "b4152d10-227d-4cdf-ae74-2803ee0fcfff",
+        "username": "Peter",
+        "password": "Peter123"
+    }
+]
