@@ -1,5 +1,5 @@
-export class CreateRepository<DataToCreate, EntityCreated> {
-    public async run(entity: DataToCreate): Promise<EntityCreated> {
+export class CreateRepository<EntityData> {
+    public async run(entity: EntityData): Promise<EntityData> {
         throw new Error("Method not implemented.");
     }
 }

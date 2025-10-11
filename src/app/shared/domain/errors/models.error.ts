@@ -7,13 +7,14 @@ export interface ModelsErrorRequest {
 }
 
 export class ModelError extends Error {
-    private readonly modelsErrorRequest: ModelsErrorRequest;
+    public readonly modelsErrorRequest: ModelsErrorRequest;
 
     constructor(entity: string, error: z.ZodError) {
-        super(error.message);
 
         const userMessage = `${error.issues[0].path.join(".")} - ${error.issues[0].message}`;
         const developerError = error.issues.map((e) => `${e.path.join(".")}: ${e.message}`);
+
+        super(userMessage);
 
         this.name = "ModelError";
         this.modelsErrorRequest = {
