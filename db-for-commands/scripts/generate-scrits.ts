@@ -24,6 +24,14 @@ const productsPath = path.join(__dirname, 'products.json');
 console.log(`productsPath: ${productsPath}`);
 const productsData = fs.readFileSync(productsPath, 'utf-8');
 const products = JSON.parse(productsData) as any[]
+products.forEach(product => {
+    if (typeof product.name === 'string') {
+        product.name = product.name.replace(/'/g, "''");
+    }
+    if (typeof product.description === 'string') {
+        product.description = product.description.replace(/'/g, "''");
+    }
+});
 
 const productsSqlInsertValuesInitial = `INSERT INTO products (uuid, name, description, price) VALUES `;
 const productsSqlInsertValues = products.map(product => `('${product.uuid}', '${product.name}', '${product.description}', ${product.price})`).join(', \n');
