@@ -1,7 +1,11 @@
 import * as dotenv from "dotenv";
+
+const envPath = `.env.${process.env.NODE_ENV || "development"}.local`
+console.log(`getting envs on -> `, envPath);
 dotenv.config({
-  path: `.env.${process.env.NODE_ENV || "development"}.local`,
+  path: envPath,
 });
+
 
 export interface AppConfig {
   port: number;
@@ -16,6 +20,7 @@ export interface POSTGRES_ENV {
   POSTGRES_DB: string;
   POSTGRES_USER: string;
   POSTGRES_PASSWORD: string;
+  POSTGRES_PORT: string;
 }
 
 export interface JWTConfig {
@@ -61,6 +66,7 @@ class EnviromentVariables {
           POSTGRES_DB: process.env.POSTGRES_DB || "NOT-FOUND",
           POSTGRES_USER: process.env.POSTGRES_USER || "NOT-FOUND",
           POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || "NOT-FOUND",
+          POSTGRES_PORT: process.env.POSTGRES_PORT || "NOT-FOUND",
         },
       };
     }
