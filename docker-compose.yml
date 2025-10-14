@@ -9,6 +9,7 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=db_for_commands
+      - POSTGRES_PORT=5432
     depends_on:
       - db-commands
 
@@ -22,6 +23,7 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=db_for_commands
+      - POSTGRES_PORT=5432
     volumes:
       - db-commands-vol:/var/lib/postgresql/data
 
