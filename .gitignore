@@ -41,5 +41,15 @@ tmp/
 .yarn/install-state.gz
 .pnp.*
 
+# back-for-commands
+back-for-commands/node_modules
+back-for-commands/dist
+back-for-commands/build
+back-for-commands/.env
+back-for-commands/.env.local
+back-for-commands/.env.development.local
+back-for-commands/.env.test.local
+back-for-commands/.env.production.local
+
 # db-for-commands
 db-for-commands/pgadmin
