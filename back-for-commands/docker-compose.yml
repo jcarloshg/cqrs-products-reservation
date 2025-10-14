@@ -10,22 +10,6 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=db_for_commands
-    depends_on:
-      - db-commands-service
-
-  db-commands-service:
-    container_name: db-commands-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=db_for_commands
-    volumes:
-      - db-commands-vol:/var/lib/postgresql/data
 
 volumes:
   db-commands-vol:
