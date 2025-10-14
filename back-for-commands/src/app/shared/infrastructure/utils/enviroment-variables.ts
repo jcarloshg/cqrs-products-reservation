@@ -21,6 +21,7 @@ export interface POSTGRES_ENV {
   POSTGRES_USER: string;
   POSTGRES_PASSWORD: string;
   POSTGRES_PORT: string;
+  POSTGRES_HOST: string;
 }
 
 export interface JWTConfig {
@@ -67,6 +68,7 @@ class EnviromentVariables {
           POSTGRES_USER: process.env.POSTGRES_USER || "NOT-FOUND",
           POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || "NOT-FOUND",
           POSTGRES_PORT: process.env.POSTGRES_PORT || "NOT-FOUND",
+          POSTGRES_HOST: process.env.POSTGRES_HOST || "NOT-FOUND",
         },
       };
     }

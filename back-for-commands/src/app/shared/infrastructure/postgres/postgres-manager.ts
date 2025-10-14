@@ -16,32 +16,9 @@ export class PostgresManager {
             POSTGRES_ENV.POSTGRES_USER,
             POSTGRES_ENV.POSTGRES_PASSWORD,
             {
-                host: POSTGRES_ENV.POSTGRES_URL,
+                host: POSTGRES_ENV.POSTGRES_HOST,
                 port: parseInt(POSTGRES_ENV.POSTGRES_PORT),
                 dialect: "postgres",
-                dialectOptions: {
-                    // Additional PostgreSQL specific options
-                    ssl:
-                        process.env.NODE_ENV === "production"
-                            ? {
-                                require: true,
-                                rejectUnauthorized: false,
-                            }
-                            : false,
-                },
-                logging: process.env.NODE_ENV === "development" ? console.log : false,
-                pool: {
-                    max: 10,
-                    min: 0,
-                    acquire: 30000,
-                    idle: 10000,
-                },
-                define: {
-                    // Global model options
-                    timestamps: true,
-                    underscored: true,
-                    freezeTableName: true,
-                },
             }
         );
     }
@@ -66,9 +43,10 @@ export class PostgresManager {
             this.isConnected = true;
             console.log("✅ PostgreSQL connection established successfully.");
         } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
             this.isConnected = false;
-            console.error("❌ Unable to connect to PostgreSQL database:", error);
-            throw new Error(`Database connection failed: ${error}`);
+            console.error("❌ Unable to connect to PostgreSQL database:", errorMessage);
+            throw new Error(`Database connection failed: ${errorMessage}`);
         }
     }
 
