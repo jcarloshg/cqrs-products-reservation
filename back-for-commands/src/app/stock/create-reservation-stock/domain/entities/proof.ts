@@ -1,9 +1,18 @@
 import z from "zod";
 import { DomainEvent } from "@/app/shared/domain/domain-events/domain-event";
-import { ReservationStock } from "./reservation-stock.entity";
+import { ReservationStockProps } from "./reservation-stock.entity";
 
 export class CreateEntityDomain<T> extends DomainEvent {
     public readonly eventName = "entity.created";
+    public readonly data: T;
+    constructor(data: T) {
+        super();
+        this.data = data;
+    }
+}
+
+export class UpdateEntityDomain<T> extends DomainEvent {
+    public readonly eventName = "entity.updated";
     public readonly data: T;
     constructor(data: T) {
         super();
@@ -18,41 +27,59 @@ export class AggregateRoot {
         this.domainEvents = [];
     }
 
-    pullDomainEvents(): Array<DomainEvent> {
+    public pullDomainEvents(): Array<DomainEvent> {
         const domainEvents = this.domainEvents.slice();
         this.domainEvents = [];
         return domainEvents;
     }
 
-    record(event: DomainEvent): void {
+    public recordDomainEvent(event: DomainEvent): void {
         this.domainEvents.push(event);
     }
 }
 
-export class EntityProps<T> extends AggregateRoot {
-    public readonly props: T;
+export class EntityProps<T> {
+    private _aggregateRoot: AggregateRoot;
+    private _props: T;
+    private _validFn: (props: T) => boolean;
 
-    constructor(props: T) {
-        super();
-        this._validData(props);
+    constructor(props: T, validFn: (props: T) => boolean) {
+        this._aggregateRoot = new AggregateRoot();
+        this._validFn = validFn;
         this._create(props);
-        this.props = props;
+        this._props = props;
     }
 
-    public get value(): Readonly<T> {
-        // immutability
-        return Object.freeze({ ...this.props });
-    }
-
-    private _create(props: T): EntityProps<T> {
+    private _create(props: T): void {
+        this._validFn(props);
+        // record domain event
         const domainEvent = new CreateEntityDomain<T>(props);
-        this.record(domainEvent);
-        return new EntityProps<T>(props);
+        this._aggregateRoot.recordDomainEvent(domainEvent);
     }
 
-    private _validData(props: T): boolean {
-        throw new Error("Method not implemented.");
+    public getCopy(): Readonly<T> {
+        // immutability
+        return Object.freeze({ ...this._props });
     }
+
+    public update(value: Partial<T>) {
+        // 1. validate the new props
+        const updatedProps = { ...this._props, ...value };
+        this._validFn(updatedProps);
+        this._props = updatedProps;
+        // 2. record domain event
+        const domainEvent = new UpdateEntityDomain<T>(updatedProps);
+        this._aggregateRoot.recordDomainEvent(domainEvent);
+    }
+
+    public getAggregateRoot(): AggregateRoot {
+        return this._aggregateRoot;
+    }
+}
+
+export interface EntityDomain<T> {
+    getProps(): Readonly<T>;
+    getAggregateRoot(): AggregateRoot;
 }
 
 // ─────────────────────────────────────
@@ -69,28 +96,64 @@ const StockPropsSchema = z.object({
 });
 export type StockProps = z.infer<typeof StockPropsSchema>;
 
-export class Stock extends EntityProps<StockProps> {
+export class StockReservedDomainEvent extends DomainEvent {
+    public readonly eventName = "stock.reserved";
+
+    public readonly stock: StockProps;
+    public readonly reservationStock: ReservationStockProps;
+
+    constructor(data: StockProps, reservationStock: ReservationStockProps) {
+        super();
+        this.stock = data;
+        this.reservationStock = reservationStock;
+    }
+}
+
+export class StockProof implements EntityDomain<StockProps> {
+    private readonly _entityProps: EntityProps<StockProps>;
+
     constructor(props: StockProps) {
-        super(props);
+        this._entityProps = new EntityProps<StockProps>(props, this._validData);
     }
 
-    public reserve(quantity: number, reservationStock: ReservationStock): void {
+    public getProps(): Readonly<StockProps> {
+        return this._entityProps.getCopy();
+    }
+
+    public getAggregateRoot(): AggregateRoot {
+        return this._entityProps.getAggregateRoot();
+    }
+
+    private _validData(props: StockProps): boolean {
+        const parsed = StockPropsSchema.safeParse(props);
+        if (parsed.success === false) throw new Error("Invalid stock data");
+        return true;
+    }
+
+    public reserve(reservationStock: ReservationStockProps): void {
         // 1. System checks available stock
-        const available_quantity = this.props.available_quantity;
-        const reserved_quantity = this.props.reserved_quantity;
+        const props = this.getProps();
+        const available_quantity = props.available_quantity;
+        const reserved_quantity = props.reserved_quantity;
         const availableQuantity = available_quantity - reserved_quantity;
         if (availableQuantity <= 0) throw new Error("No stock available");
 
         // 2. System checks if available stock is sufficient for the reservation
-        const reservedQuantity = reservationStock.props.quantity;
+        const reservedQuantity = reservationStock.quantity;
         if (availableQuantity < reservedQuantity)
             throw new Error("Insufficient stock available");
 
         // 3. System updates reserved quantity
-        this.props.reserved_quantity += reservedQuantity;
+        const new_reserved_quantity = reserved_quantity + reservedQuantity;
+        this._entityProps.update({
+            reserved_quantity: new_reserved_quantity,
+        });
 
         // 4. System records domain event
-        const domainEvent = new CreateEntityDomain<StockProps>(this.props);
-        this.record(domainEvent);
+        const stockReservedDomainEvent = new StockReservedDomainEvent(
+            this._entityProps.getCopy(),
+            reservationStock
+        );
+        this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
     }
 }
