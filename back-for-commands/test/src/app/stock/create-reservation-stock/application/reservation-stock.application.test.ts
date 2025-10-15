@@ -7,7 +7,7 @@ import {
     ReservationStockApplication,
     ReservationStockApplicationRequest,
 } from "@/app/stock/create-reservation-stock/application/reservation-stock.application";
-import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/create-reservation-stock.doamin-event";
+import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 import { CreateReservationStockInMemory } from "@/app/stock/create-reservation-stock/infra/in-memory/create-reservation-stock.in-memory";
 

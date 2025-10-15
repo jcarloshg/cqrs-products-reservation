@@ -1,5 +1,5 @@
 import { EventHandler } from "@/app/shared/domain/domain-events/event-handler";
-import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/create-reservation-stock.doamin-event";
+import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 
 export class SendNotificationEventHandler
     implements EventHandler<CreateReservationStockDomainEvent> {

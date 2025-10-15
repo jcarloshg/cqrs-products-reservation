@@ -1,6 +1,6 @@
 import z from "zod";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
-import { CreateReservationStockDomainEvent } from "../create-reservation-stock.doamin-event";
+import { CreateReservationStockDomainEvent } from "../domain-events/create-reservation-stock.doamin-event";
 import { ModelError } from "@/app/shared/domain/errors/models.error";
 
 export enum ReservationStatus {
@@ -40,7 +40,7 @@ export class ReservationStock extends AggregateRoot {
     public static create(props: ReservationStockProps): ReservationStock {
         const reservationStock = new ReservationStock(props);
         const domainEvent = new CreateReservationStockDomainEvent(props);
-        reservationStock.record(domainEvent);
+        reservationStock.recordDomainEvent(domainEvent);
         return reservationStock;
     }
 

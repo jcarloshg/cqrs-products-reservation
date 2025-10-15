@@ -1,11 +1,12 @@
 // shared
 import { CommandHandler } from "@/app/shared/domain/domain-events/command-handler";
 import { EventPublisher } from "@/app/shared/domain/domain-events/event-publisher";
-// create-reservation-stock/domain
+// domain/entities
+import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
 import { ReservationStock } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+// domain/repository
 import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
 import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
-import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
 
 import { CreateReservationStockCommand } from "./create-reservation-stock.command";
 
@@ -35,15 +36,10 @@ export class CreateReservationStockCommandHandler
             if (!stock) throw new Error("Product not found");
 
             // 2. System checks available stock (total - reserved)
-            const availableStock = stock.props;
-            const available_quantity = availableStock.available_quantity;
-            const reserved_quantity = availableStock.reserved_quantity;
-            const availableQuantity = available_quantity - reserved_quantity;
-            if (availableQuantity < command.props.quantity)
-                throw new Error("Insufficient stock available");
+            const reservationStockProps = command.props;
+            stock.reserve(reservationStockProps);
 
             // 3. System creates a new reservation with expiration time (default: 30 minutes)
-            const reservationStockProps = command.props;
             const expiresAt = reservationStockProps.expiresAt;
             if (!expiresAt) {
                 const expiresAt = new Date();

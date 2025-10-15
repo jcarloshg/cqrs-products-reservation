@@ -6,7 +6,7 @@ describe('get-stock-by-product-id.postgres.test', () => {
         const getStockByProductIdPostgres = new GetStockByProductIdPostgres();
         const stock = await getStockByProductIdPostgres.findById(productUUid);
         expect(stock).toBeDefined();
-        expect(stock?.props).toBeDefined();
-        expect(stock?.props.product_uuid).toBe(productUUid);
+        expect(stock?.getProps()).toBeDefined();
+        expect(stock?.getProps().product_uuid).toBe(productUUid);
     });
 });

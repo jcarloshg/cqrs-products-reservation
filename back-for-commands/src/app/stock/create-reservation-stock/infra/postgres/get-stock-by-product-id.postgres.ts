@@ -1,6 +1,8 @@
+import { StockForDB } from "./models.sequelize";
+
 import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
 import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
-import { StockForDB } from "./models.sequelize";
+
 
 export class GetStockByProductIdPostgres
     implements GetStockByProductIdRepository {

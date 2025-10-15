@@ -1,6 +1,10 @@
-import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
-import { ModelError } from "@/app/shared/domain/errors/models.error";
 import z from "zod";
+
+// import { StockReservedDomainEvent } from "../domain-events/StockReservedDomainEvent";
+import { StockReservedDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-reserved.domain-event";
+import { ReservationStockProps } from "./reservation-stock.entity";
+import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
+import { EntityDomain, EntityProps } from "@/app/shared/domain/model/entity";
 
 const StockPropsSchema = z.object({
     uuid: z.uuid(),
@@ -10,32 +14,51 @@ const StockPropsSchema = z.object({
 });
 export type StockProps = z.infer<typeof StockPropsSchema>;
 
-export class Stock extends AggregateRoot {
-    private readonly stockProps: StockProps;
+export class Stock implements EntityDomain<StockProps> {
+    private readonly _entityProps: EntityProps<StockProps>;
 
     constructor(props: StockProps) {
-        super();
-        this.stockProps = props;
+        this._entityProps = new EntityProps<StockProps>(props, this._validData);
     }
 
-    public get props(): StockProps {
-        return this.stockProps;
+    getProps(): Readonly<StockProps> {
+        return this._entityProps.getCopy();
     }
 
-    public static create(props: StockProps): Stock {
-        const stock = new Stock(props);
-        return stock;
+    getAggregateRoot(): AggregateRoot {
+        return this._entityProps.getAggregateRoot();
     }
 
-    public static parse(data: { [key: string]: any }): StockProps {
-        const parsed = StockPropsSchema.safeParse(data);
-        if (parsed.success === false) throw new ModelError("Product", parsed.error);
-        return parsed.data;
+    private _validData(props: StockProps): boolean {
+        const parsed = StockPropsSchema.safeParse(props);
+        if (parsed.success === false) throw new Error("Invalid stock data");
+        return true;
     }
 
-    public reserve(quantity: number): void {
-        
+    public reserve(reservationStock: ReservationStockProps): void {
+        // 1. System checks available stock
+        const props = this.getProps();
+        const available_quantity = props.available_quantity;
+        const reserved_quantity = props.reserved_quantity;
+        const availableQuantity = available_quantity - reserved_quantity;
+        if (availableQuantity <= 0) throw new Error("No stock available");
+
+        // 2. System checks if available stock is sufficient for the reservation
+        const reservedQuantity = reservationStock.quantity;
+        if (availableQuantity < reservedQuantity)
+            throw new Error("Insufficient stock available");
+
+        // 3. System updates reserved quantity
+        const new_reserved_quantity = reserved_quantity + reservedQuantity;
+        this._entityProps.update({
+            reserved_quantity: new_reserved_quantity,
+        });
+
+        // 4. System records domain event
+        const stockReservedDomainEvent = new StockReservedDomainEvent(
+            this._entityProps.getCopy(),
+            reservationStock
+        );
+        this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
     }
-
-
 }

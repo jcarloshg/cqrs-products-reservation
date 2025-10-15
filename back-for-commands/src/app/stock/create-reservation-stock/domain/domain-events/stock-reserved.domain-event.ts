@@ -1,6 +1,6 @@
 import { DomainEvent } from "@/app/shared/domain/domain-events/domain-event";
 import { ReservationStockProps } from "../entities/reservation-stock.entity";
-import { StockProps } from "../entities/stock-domain.entity";
+import { StockProps } from "../entities/stock.entity";
 
 export class StockReservedDomainEvent extends DomainEvent {
     public readonly eventName = "stock.reserved";
