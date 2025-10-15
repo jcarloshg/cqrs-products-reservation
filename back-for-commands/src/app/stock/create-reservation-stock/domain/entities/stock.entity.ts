@@ -1,10 +1,13 @@
 import z from "zod";
 
 // import { StockReservedDomainEvent } from "../domain-events/StockReservedDomainEvent";
-import { StockReservedDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-reserved.domain-event";
-import { ReservationStockProps } from "./reservation-stock.entity";
+import { StockReservationInfo, StockReservedDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-reserved.domain-event";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
-import { EntityDomain, EntityProps } from "@/app/shared/domain/model/entity";
+import {
+    EntityDomain,
+    EntityProps,
+    EntityPropsRawData,
+} from "@/app/shared/domain/model/entity";
 
 const StockPropsSchema = z.object({
     uuid: z.uuid(),
@@ -17,7 +20,7 @@ export type StockProps = z.infer<typeof StockPropsSchema>;
 export class Stock implements EntityDomain<StockProps> {
     private readonly _entityProps: EntityProps<StockProps>;
 
-    constructor(props: StockProps) {
+    constructor(props: EntityPropsRawData) {
         this._entityProps = new EntityProps<StockProps>(props, this._validData);
     }
 
@@ -29,13 +32,13 @@ export class Stock implements EntityDomain<StockProps> {
         return this._entityProps.getAggregateRoot();
     }
 
-    private _validData(props: StockProps): boolean {
+    private _validData(props: EntityPropsRawData): StockProps {
         const parsed = StockPropsSchema.safeParse(props);
         if (parsed.success === false) throw new Error("Invalid stock data");
-        return true;
+        return parsed.data;
     }
 
-    public reserve(reservationStock: ReservationStockProps): void {
+    public reserve(reservationStock: StockReservationInfo): void {
         // 1. System checks available stock
         const props = this.getProps();
         const available_quantity = props.available_quantity;

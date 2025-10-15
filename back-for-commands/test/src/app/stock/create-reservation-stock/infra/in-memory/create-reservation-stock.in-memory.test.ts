@@ -15,7 +15,7 @@ describe('create-reservation-stock.in-memory.test', () => {
             status: ReservationStatus.PENDING,
             expiresAt: expiresAt,
         }
-        const reservationStock = ReservationStock.create(reservationStockProps);
+        const reservationStock = new ReservationStock(reservationStockProps);
         const result = await createReservationStock.run(reservationStock);
 
         expect(createReservationStock).toBeDefined();

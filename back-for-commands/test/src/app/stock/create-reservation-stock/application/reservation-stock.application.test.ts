@@ -1,23 +1,21 @@
 import { EventPublisherInMemory } from "@/app/shared/infrastructure/in-memory/even-publisher.in-memory";
 import { EventBusInMemory } from "@/app/shared/infrastructure/in-memory/event-bus.in-memeory";
-import { OpenFilesInMemory } from "@/app/shared/infrastructure/in-memory/open-files.in-memory";
 import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command-hanlder";
 import { SendNotificationEventHandler } from "@/app/stock/create-reservation-stock/application/events/send-notification.event-handler";
 import {
     ReservationStockApplication,
     ReservationStockApplicationRequest,
 } from "@/app/stock/create-reservation-stock/application/reservation-stock.application";
-import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-import { CreateReservationStockInMemory } from "@/app/stock/create-reservation-stock/infra/in-memory/create-reservation-stock.in-memory";
+import { CreateReservationStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/create-reservation-stock.postgres";
+import { GetStockByProductIdPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/get-stock-by-product-id.postgres";
 
 describe("reservation-stock.application.test", () => {
     it("should create a reservation stock successfully", async () => {
         // init all services(repositories)
-        const openFilesInMemory = new OpenFilesInMemory();
-        const createReservationStock = new CreateReservationStockInMemory(
-            openFilesInMemory
-        );
+
+        const createReservationStockPostgres = new CreateReservationStockPostgres();
+        const getStockByProductIdPostgres = new GetStockByProductIdPostgres();
 
         // init event handlers
         const eventBus = new EventBusInMemory();
@@ -30,8 +28,9 @@ describe("reservation-stock.application.test", () => {
         // init command handlers
         const createReservationStockCommandHandler =
             new CreateReservationStockCommandHandler(
-                createReservationStock,
-                eventPublisher
+                createReservationStockPostgres,
+                getStockByProductIdPostgres,
+                eventPublisher,
             );
 
         // run the use case

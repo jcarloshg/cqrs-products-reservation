@@ -1,10 +1,10 @@
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
+import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
+import { CreateReservationStockCommandHandler } from "./commands/create-reservation-stock.command-hanlder";
 import {
     ReservationStock,
     ReservationStockProps,
-} from "../domain/entities/reservation-stock.entity";
-import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
-import { CreateReservationStockCommandHandler } from "./commands/create-reservation-stock.command-hanlder";
+} from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 
 export interface ReservationStockApplicationRequest {
     data: { [key: string]: any };
@@ -28,24 +28,23 @@ export class ReservationStockApplication {
         req: ReservationStockApplicationRequest
     ): Promise<CustomResponse<ReservationStockApplicationResponse | undefined>> {
         try {
-            // 1. validate request body
-            const { data } = req;
-            const reservationStockProps = ReservationStock.parse(data);
-            const reservationStock = ReservationStock.create(reservationStockProps);
+            // const reservationStock = new ReservationStockDomain(data);
+            // const props = reservationStock.getProps();
 
-            // 2. create command
+            // 1. validate request body && parse props
+            const { data } = req;
             const createReservationStockCommand = new CreateReservationStockCommand(
-                reservationStock.props
+                data
             );
 
-            // 3. handle command
-            await this._createReservationStockCommandHandler.handler(
+            // 2. handle command
+            const a = await this._createReservationStockCommandHandler.handler(
                 createReservationStockCommand
             );
 
-            // 4. return response
+            // 3. return response
             const reservationStockResponse: ReservationStockApplicationResponse = {
-                reservationStock: reservationStock.props,
+                reservationStock: {} as ReservationStockProps,
             };
             return CustomResponse.created(reservationStockResponse);
         } catch (error) {

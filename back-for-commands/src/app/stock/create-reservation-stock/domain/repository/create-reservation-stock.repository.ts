@@ -6,7 +6,7 @@ export class CreateReservationStockRepository
 
     constructor() { }
 
-    public run(entity: ReservationStock): Promise<ReservationStock> {
+    public run(entity: ReservationStock): Promise<ReservationStock | null> {
         throw new Error("Method not implemented.");
     }
 }

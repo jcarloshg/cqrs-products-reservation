@@ -1,7 +1,13 @@
 import z from "zod";
+
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
-import { CreateReservationStockDomainEvent } from "../domain-events/create-reservation-stock.doamin-event";
 import { ModelError } from "@/app/shared/domain/errors/models.error";
+import {
+    EntityDomain,
+    EntityProps,
+    EntityPropsRawData,
+} from "@/app/shared/domain/model/entity";
+import { CreateReservationStockDomainEvent } from "../domain-events/create-reservation-stock.doamin-event";
 
 export enum ReservationStatus {
     PENDING = "PENDING",
@@ -15,38 +21,41 @@ const ProductToCreateScheme = z.object({
     ownerUuid: z.uuid(),
     productId: z.uuid(),
     quantity: z.number().min(1),
-    status: z.enum([
-        ReservationStatus.PENDING,
-        ReservationStatus.CONFIRMED,
-        ReservationStatus.CANCELLED,
-        ReservationStatus.EXPIRED,
-    ]),
+    status: z.enum([ReservationStatus.PENDING]),
     expiresAt: z.date().min(new Date()),
 });
 export type ReservationStockProps = z.infer<typeof ProductToCreateScheme>;
 
-export class ReservationStock extends AggregateRoot {
-    private readonly reservationStockProps: ReservationStockProps;
+export class ReservationStock implements EntityDomain<ReservationStockProps> {
+    private readonly _entityProps: EntityProps<ReservationStockProps>;
 
-    constructor(props: ReservationStockProps) {
-        super();
-        this.reservationStockProps = props;
+    constructor(props: EntityPropsRawData) {
+        this._entityProps = new EntityProps<ReservationStockProps>(
+            props,
+            ReservationStock.parse
+        );
     }
 
-    public get props(): ReservationStockProps {
-        return { ...this.reservationStockProps };
+    getProps(): Readonly<ReservationStockProps> {
+        return this._entityProps.getCopy();
     }
 
-    public static create(props: ReservationStockProps): ReservationStock {
-        const reservationStock = new ReservationStock(props);
-        const domainEvent = new CreateReservationStockDomainEvent(props);
-        reservationStock.recordDomainEvent(domainEvent);
-        return reservationStock;
+    getAggregateRoot(): AggregateRoot {
+        return this._entityProps.getAggregateRoot();
     }
 
-    public static parse(data: { [key: string]: any }): ReservationStockProps {
+    public static parse(data: EntityPropsRawData): ReservationStockProps {
         const parsed = ProductToCreateScheme.safeParse(data);
         if (parsed.success === false) throw new ModelError("Product", parsed.error);
         return parsed.data;
+    }
+
+    public createReservationStock(props: ReservationStockProps): void {
+        // 1. Valid data
+        ReservationStock.parse(props);
+        // 2. Create domain event
+        const domainEvent = new CreateReservationStockDomainEvent(props);
+        const aggregateRoot = this.getAggregateRoot();
+        aggregateRoot.recordDomainEvent(domainEvent);
     }
 }

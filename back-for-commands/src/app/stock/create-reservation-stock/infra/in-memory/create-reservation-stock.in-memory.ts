@@ -1,6 +1,6 @@
-import { ReservationStock, ReservationStockProps } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
 import { OpenFilesInMemory } from '@/app/shared/infrastructure/in-memory/open-files.in-memory';
+import { ReservationStock } from "../../domain/entities/reservation-stock.entity";
 
 export class CreateReservationStockInMemory
     implements CreateReservationStockRepository {
@@ -14,7 +14,7 @@ export class CreateReservationStockInMemory
     public async run(entity: ReservationStock): Promise<ReservationStock> {
         try {
             const products = await this._openFilesInMemory.getReservationStock();
-            products.push(entity.props);
+            products.push(entity.getProps());
             await this._openFilesInMemory.saveReservationStock(products);
             return entity;
         } catch (error) {

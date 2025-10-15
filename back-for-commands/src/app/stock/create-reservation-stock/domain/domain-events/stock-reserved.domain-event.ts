@@ -1,14 +1,18 @@
 import { DomainEvent } from "@/app/shared/domain/domain-events/domain-event";
-import { ReservationStockProps } from "../entities/reservation-stock.entity";
 import { StockProps } from "../entities/stock.entity";
+
+export type StockReservationInfo = {
+    reservationUuid: string;
+    quantity: number;
+};
 
 export class StockReservedDomainEvent extends DomainEvent {
     public readonly eventName = "stock.reserved";
 
     public readonly stock: StockProps;
-    public readonly reservationStock: ReservationStockProps;
+    public readonly reservationStock: StockReservationInfo;
 
-    constructor(data: StockProps, reservationStock: ReservationStockProps) {
+    constructor(data: StockProps, reservationStock: StockReservationInfo) {
         super();
         this.stock = data;
         this.reservationStock = reservationStock;

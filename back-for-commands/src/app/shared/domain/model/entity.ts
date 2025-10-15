@@ -10,6 +10,7 @@ import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root"
 export interface EntityDomain<T> {
     getProps(): Readonly<T>;
     getAggregateRoot(): AggregateRoot;
+    // fromPrimitives(props: { [key: string]: any }): EntityDomain<T>;
 }
 
 // ─────────────────────────────────────
@@ -36,21 +37,27 @@ export class UpdateEntityDomain<T> extends DomainEvent {
     }
 }
 
+export type EntityPropsRawData = { [key: string]: any };
+export type EntityPropsValidator<T> = (props: EntityPropsRawData) => T;
+
+
 export class EntityProps<T> {
     private _aggregateRoot: AggregateRoot;
     private _props: T;
-    private _validFn: (props: T) => boolean;
+    private _validFn: EntityPropsValidator<T>;
 
-    constructor(props: T, validFn: (props: T) => boolean) {
+    constructor(
+        props: { [key: string]: any },
+        validFn: EntityPropsValidator<T>
+    ) {
         this._aggregateRoot = new AggregateRoot();
         this._validFn = validFn;
-        this._create(props);
-        this._props = props;
+        const parsed = this._validFn(props);
+        this._create(parsed);
+        this._props = parsed;
     }
 
     private _create(props: T): void {
-        this._validFn(props);
-        // record domain event
         const domainEvent = new CreateEntityDomain<T>(props);
         this._aggregateRoot.recordDomainEvent(domainEvent);
     }
