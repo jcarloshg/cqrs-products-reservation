@@ -32,4 +32,10 @@ export class Stock extends AggregateRoot {
         if (parsed.success === false) throw new ModelError("Product", parsed.error);
         return parsed.data;
     }
+
+    public reserve(quantity: number): void {
+        
+    }
+
+
 }

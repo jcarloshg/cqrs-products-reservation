@@ -34,7 +34,7 @@ export class ReservationStock extends AggregateRoot {
     }
 
     public get props(): ReservationStockProps {
-        return this.reservationStockProps;
+        return { ...this.reservationStockProps };
     }
 
     public static create(props: ReservationStockProps): ReservationStock {
