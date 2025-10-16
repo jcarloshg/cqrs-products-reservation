@@ -1,5 +1,6 @@
 import z from "zod";
 import { Command } from "@/app/shared/domain/domain-events/command";
+import { ZodError } from "@/app/shared/domain/errors/zod.error";
 
 const CreateReservationStockCommandSchema = z.object({
     uuid: z.uuid(),
@@ -18,7 +19,7 @@ export class CreateReservationStockCommand implements Command {
 
     constructor(props: { [key: string]: any }) {
         const parsed = CreateReservationStockCommandSchema.safeParse(props);
-        if (parsed.success === false) throw new Error("The reservation's properties are invalid.");
+        if (parsed.success === false) throw new ZodError("CreateReservationStockCommand", parsed.error);
         this.createReservationStockCommandProps = parsed.data;
     }
 }

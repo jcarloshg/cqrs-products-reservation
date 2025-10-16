@@ -1,3 +1,4 @@
+import { ZodError } from "@/app/shared/domain/errors/zod.error";
 import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-bus.own";
 import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
 import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command";
@@ -12,6 +13,7 @@ import { CreateReservationStockPostgres } from "@/app/stock/create-reservation-s
 import { GetStockByProductIdPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/get-stock-by-product-id.postgres";
 import {
     ProductForDB,
+    Reservation,
     StockForDB,
     UserFromDB,
 } from "@/app/stock/create-reservation-stock/infra/postgres/models.sequelize";
@@ -19,6 +21,7 @@ import { UpdateReservedStockPostgres } from "@/app/stock/create-reservation-stoc
 
 describe("create-reservation-stock.command-hanlder.test", () => {
     let createReservationStockCommandHandler: CreateReservationStockCommandHandler;
+    let testReservationId: string;
     let testStockId: string;
     let testProductId: string;
     let testUserId: string;
@@ -93,7 +96,16 @@ describe("create-reservation-stock.command-hanlder.test", () => {
 
     afterEach(async () => {
         // Clean up test data after each test
+        // Order matters due to foreign key constraints:
+        // 1. Delete reservations first (they reference products and users)
+        // 2. Delete stock (it references products)
+        // 3. Delete products
+        // 4. Delete users
         try {
+            // Clean up any reservations that might have been created during the test
+            await Reservation.destroy({
+                where: { uuid: testReservationId },
+            });
             await StockForDB.destroy({
                 where: { uuid: testStockId },
             });
@@ -129,8 +141,9 @@ describe("create-reservation-stock.command-hanlder.test", () => {
 
     it("should create a reservation stock successfully", async () => {
         // Arrange
+        testReservationId = crypto.randomUUID();
         const command = new CreateReservationStockCommand({
-            uuid: crypto.randomUUID(),
+            uuid: testReservationId,
             ownerUuid: testUserId,
             productId: testProductId,
             quantity: 10,
@@ -149,4 +162,46 @@ describe("create-reservation-stock.command-hanlder.test", () => {
         expect(res.data?.reservationStock.productId).toBe(testProductId);
         expect(res.data?.reservationStock.quantity).toBe(10);
     });
+
+    it("should throw an error if product does not exist", async () => {
+        // Arrange
+        const nonExistentProductId = crypto.randomUUID();
+        const command = new CreateReservationStockCommand({
+            uuid: crypto.randomUUID(),
+            ownerUuid: testUserId, // user exists
+            productId: nonExistentProductId, // product does NOT exist
+            quantity: 5,
+            expiresAt: new Date(new Date().getTime() + 10000),
+            status: ReservationStatus.PENDING,
+        });
+
+        // Act
+        const res = await createReservationStockCommandHandler.handler(command);
+
+        // Assert
+        expect(res.code).toBe(404);
+        expect(res.message).toBe("Stock for the specified product not found");
+    });
+
+    it("should throw an error if reservation quantity is zero", async () => {
+        // Arrange
+        try {
+            new CreateReservationStockCommand({
+                uuid: crypto.randomUUID(),
+                ownerUuid: testUserId,
+                productId: testProductId,
+                quantity: 0, // Invalid quantity
+                expiresAt: new Date(new Date().getTime() + 10000),
+                status: ReservationStatus.PENDING,
+            });
+        } catch (error) {
+            expect(error).toBeInstanceOf(ZodError);
+            const zodError = error as ZodError;
+            expect(zodError.modelsErrorRequest.entity).toBe("CreateReservationStockCommand");
+            expect(zodError.modelsErrorRequest.userError).toMatch("quantity - Too small: expected number to be >=1");
+            return;
+        }
+    });
+
+
 });
