@@ -9,12 +9,13 @@ import {
 import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 import { CreateReservationStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/create-reservation-stock.postgres";
 import { GetStockByProductIdPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/get-stock-by-product-id.postgres";
+import { UpdateReservedStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/update-reserved-stock.postgres";
 
 describe("reservation-stock.application.test", () => {
     it("should create a reservation stock successfully", async () => {
         // init all services(repositories)
-
         const createReservationStockPostgres = new CreateReservationStockPostgres();
+        const updateReservedStockPostgres = new UpdateReservedStockPostgres();
         const getStockByProductIdPostgres = new GetStockByProductIdPostgres();
 
         // init event handlers
@@ -30,6 +31,7 @@ describe("reservation-stock.application.test", () => {
             new CreateReservationStockCommandHandler(
                 createReservationStockPostgres,
                 getStockByProductIdPostgres,
+                updateReservedStockPostgres,
                 eventPublisher,
             );
 

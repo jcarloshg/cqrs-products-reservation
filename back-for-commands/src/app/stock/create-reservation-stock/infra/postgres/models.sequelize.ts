@@ -81,7 +81,7 @@ User.init(
 );
 
 // Product Model
-export class Product
+export class ProductForDB
     extends Model<ProductAttributes, ProductCreationAttributes>
     implements ProductAttributes {
     public uuid!: string;
@@ -90,7 +90,7 @@ export class Product
     public price!: number;
 }
 
-Product.init(
+ProductForDB.init(
     {
         uuid: {
             type: DataTypes.UUID,
@@ -139,7 +139,7 @@ StockForDB.init(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: Product,
+                model: ProductForDB,
                 key: "uuid",
             },
         },
@@ -193,7 +193,7 @@ Reservation.init(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: Product,
+                model: ProductForDB,
                 key: "uuid",
             },
         },
@@ -223,12 +223,12 @@ Reservation.init(
 
 // Define associations
 // Product has many Stock entries
-Product.hasMany(StockForDB, {
+ProductForDB.hasMany(StockForDB, {
     foreignKey: "product_uuid",
     as: "stocks",
 });
 
-StockForDB.belongsTo(Product, {
+StockForDB.belongsTo(ProductForDB, {
     foreignKey: "product_uuid",
     as: "product",
 });
@@ -245,12 +245,12 @@ Reservation.belongsTo(User, {
 });
 
 // Product has many Reservations
-Product.hasMany(Reservation, {
+ProductForDB.hasMany(Reservation, {
     foreignKey: "product_id",
     as: "reservations",
 });
 
-Reservation.belongsTo(Product, {
+Reservation.belongsTo(ProductForDB, {
     foreignKey: "product_id",
     as: "product",
 });
