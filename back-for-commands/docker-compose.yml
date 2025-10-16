@@ -1,0 +1,16 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - POSTGRES_URL=postgresql://admin:123456@db-commands-service:5432/db_for_commands
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=db_for_commands
+
+volumes:
+  db-commands-vol:
+    driver: local

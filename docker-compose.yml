@@ -1,33 +1,33 @@
 services:
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  back-commands:
+    build: ./back-for-commands
+    container_name: back-commands
     ports:
       - 3000:3000
     environment:
-      - POSTGRES_URL=postgresql://admin:123456@db-sql:5432/data_base_name
+      - POSTGRES_URL=postgresql://admin:123456@db-commands:5432/db_for_commands
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=data_base_name
+      - POSTGRES_DB=db_for_commands
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=db-commands
     depends_on:
-      - db-sql
+      - db-commands
 
-  db-sql:
-    image: postgres:15.13
+  db-commands:
+    build: ./db-for-commands
+    container_name: db-commands
     ports:
       - 5432:5432
     environment:
+      - POSTGRES_URL=postgresql://admin:123456@db-commands:5432/db_for_commands
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=data_base_name
+      - POSTGRES_DB=db_for_commands
+      - POSTGRES_PORT=5432
     volumes:
-      - database-volume:/var/lib/postgresql/data
+      - db-commands-vol:/var/lib/postgresql/data
 
 volumes:
-  database-volume:
+  db-commands-vol:
     driver: local
-    driver_opts:
-      type: none
-      device: ./../database-volume
-      o: bind
