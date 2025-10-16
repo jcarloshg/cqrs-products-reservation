@@ -1,38 +1,46 @@
 // shared
-import { CommandHandler } from "@/app/shared/domain/domain-events/command-handler";
+import {
+    CommandHandler,
+    CommandHandlerResp,
+} from "@/app/shared/domain/domain-events/command-handler";
 import { EventPublisher } from "@/app/shared/domain/domain-events/event-publisher";
+import { DomainError } from "@/app/shared/domain/errors/domain.error";
+import { ZodError } from "@/app/shared/domain/errors/zod.error";
+import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 // domain/entities
 import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
-import { ReservationStock } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-import { StockReservationInfo } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-reserved.domain-event";
-
+import {
+    ReservationStock,
+    ReservationStockProps,
+} from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { StockReservationInfo } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 // domain/repository
 import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
 import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
 import { UpdateReservedStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/update-reserved-stock.repository";
+// application
+import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
 
-import { CreateReservationStockCommand } from "./create-reservation-stock.command";
+
+export interface CreateReservationStockResponse {
+    reservationStock: ReservationStockProps;
+}
 
 export class CreateReservationStockCommandHandler
-    implements CommandHandler<CreateReservationStockCommand> {
-    private readonly _CreateReservationStockRepository: CreateReservationStockRepository;
-    private readonly _GetStockByProductIdRepository: GetStockByProductIdRepository;
-    private readonly _UpdateReservedStockRepository: UpdateReservedStockRepository;
-    private readonly _eventPublisher: EventPublisher;
-
+    implements
+    CommandHandler<
+        CommandHandlerResp<CreateReservationStockResponse | undefined>
+    > {
     constructor(
-        CreateReservationStockRepository: CreateReservationStockRepository,
-        GetStockByProductIdRepository: GetStockByProductIdRepository,
-        UpdateReservedStock: UpdateReservedStockRepository,
-        eventPublisher: EventPublisher
-    ) {
-        this._CreateReservationStockRepository = CreateReservationStockRepository;
-        this._GetStockByProductIdRepository = GetStockByProductIdRepository;
-        this._UpdateReservedStockRepository = UpdateReservedStock;
-        this._eventPublisher = eventPublisher;
-    }
+        private readonly _CreateReservationStockRepository: CreateReservationStockRepository,
+        private readonly _GetStockByProductIdRepository: GetStockByProductIdRepository,
+        private readonly _UpdateReservedStockRepository: UpdateReservedStockRepository,
+        private readonly _eventPublisher: EventPublisher
+    ) { }
 
-    public async handler(command: CreateReservationStockCommand): Promise<void> {
+    public async handler(
+        command: CreateReservationStockCommand
+    ): Promise<CommandHandlerResp<CreateReservationStockResponse | undefined>> {
         try {
             // ─────────────────────────────────────
             // 1. System validates product exists
@@ -42,8 +50,10 @@ export class CreateReservationStockCommandHandler
                 await this._GetStockByProductIdRepository.findById(
                     reservationStockProps.productId
                 );
-            if (!stock) throw new Error("Product not found");
-
+            if (!stock)
+                return CustomResponse.notFound(
+                    "Stock for the specified product not found"
+                ).toCommandHandlerResp();
 
             // ─────────────────────────────────────
             // 2. System checks available stock and reserves stock
@@ -81,12 +91,24 @@ export class CreateReservationStockCommandHandler
             const stockDomainEvents = stock.getAggregateRoot().pullDomainEvents();
             await this._eventPublisher.publishAll(stockDomainEvents);
 
+            // 6. return response
+            const resp: CreateReservationStockResponse = {
+                reservationStock: reservationStock.getProps(),
+            };
+            const customResponse =
+                CustomResponse.created<CreateReservationStockResponse>(resp);
+            const commandHandlerResp = customResponse.toCommandHandlerResp();
+            return commandHandlerResp;
         } catch (error) {
+            if (error instanceof DomainError)
+                return error.toCustomResponse().toCommandHandlerResp();
+
+            if (error instanceof ZodError)
+                return error.toCustomResponse().toCommandHandlerResp();
+
             const message = error instanceof Error ? error.message : String(error);
             console.error("CreateReservationStockCommandHandler - Error:", message);
-            throw new Error(
-                "CreateReservationStockCommandHandler - something went wrong"
-            );
+            return CustomResponse.internalServerError().toCommandHandlerResp();
         }
     }
 }

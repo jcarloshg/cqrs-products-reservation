@@ -1,10 +1,20 @@
+import { CommandHandlerResp } from "../domain-events/command-handler";
 
 export class CustomResponse<T = undefined> {
     constructor(
-        public code: number,
-        public message: string,
-        public data: T
+        public readonly code: number,
+        public readonly message: string,
+        public readonly data: T | undefined = undefined
     ) { }
+
+    public toCommandHandlerResp(): CommandHandlerResp<T> {
+        const response: CommandHandlerResp<T> = {
+            code: this.code,
+            message: this.message,
+            data: this.data
+        }
+        return response;
+    }
 
     // ============================================================
     // 200

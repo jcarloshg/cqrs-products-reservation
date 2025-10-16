@@ -1,11 +1,14 @@
+import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-bus.own";
+import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
 import { EventPublisherInMemory } from "@/app/shared/infrastructure/repository/in-memory/even-publisher.in-memory";
 import { EventBusInMemory } from "@/app/shared/infrastructure/repository/in-memory/event-bus.in-memeory";
-import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command-hanlder";
-import { SendNotificationEventHandler } from "@/app/stock/create-reservation-stock/application/events/send-notification.event-handler";
+import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/create-reservation-stock.command-hanlder";
+import { NotifyStoreEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-store.event-handler";
 import {
     ReservationStockApplication,
     ReservationStockApplicationRequest,
 } from "@/app/stock/create-reservation-stock/application/reservation-stock.application";
+import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 import { CreateReservationStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/create-reservation-stock.postgres";
 import { GetStockByProductIdPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/get-stock-by-product-id.postgres";
@@ -19,10 +22,13 @@ describe("reservation-stock.application.test", () => {
         const getStockByProductIdPostgres = new GetStockByProductIdPostgres();
 
         // init event handlers
+        const eventBusOwn = new EventBusOwn();
+        const eventPublisherOwn = new EventPublisherOwn(eventBusOwn);
+
         const eventBus = new EventBusInMemory();
         eventBus.subscribe(
-            "RESERVATION-STOCK.CREATED",
-            new SendNotificationEventHandler()
+            CreateReservationStockDomainEvent.eventName,
+            new NotifyStoreEventHandler()
         );
         const eventPublisher = new EventPublisherInMemory(eventBus);
 

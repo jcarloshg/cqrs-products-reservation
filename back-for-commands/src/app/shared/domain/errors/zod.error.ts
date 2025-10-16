@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CustomResponse } from "../model/custom-response.model";
 
 export interface ModelsErrorRequest {
     entity: string;
@@ -6,7 +7,7 @@ export interface ModelsErrorRequest {
     developerError: string[];
 }
 
-export class ModelError extends Error {
+export class ZodError extends Error {
     public readonly modelsErrorRequest: ModelsErrorRequest;
 
     constructor(entity: string, error: z.ZodError) {
@@ -16,11 +17,15 @@ export class ModelError extends Error {
 
         super(userMessage);
 
-        this.name = "ModelError";
+        this.name = "EntityError";
         this.modelsErrorRequest = {
-            entity: "Product",
+            entity: entity,
             userError: userMessage,
             developerError: developerError,
         };
+    }
+
+    public toCustomResponse(): CustomResponse {
+        return CustomResponse.badRequest(this.modelsErrorRequest.userError);
     }
 }

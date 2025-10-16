@@ -1,6 +1,6 @@
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
-import { CreateReservationStockCommandHandler } from "./commands/create-reservation-stock.command-hanlder";
+import { CreateReservationStockCommandHandler } from "./create-reservation-stock.command-hanlder";
 import {
     ReservationStock,
     ReservationStockProps,

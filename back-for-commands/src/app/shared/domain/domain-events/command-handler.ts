@@ -1,5 +1,13 @@
 import { Command } from "./command";
 
-export class CommandHandler<T extends Command> {
-    public async handler(command: T): Promise<void> { }
+export type CommandHandlerResp<R = undefined> = {
+    code: number;
+    message: string;
+    data: R | undefined;
+};
+
+export class CommandHandler<CommandHandlerResp> {
+    public async handler(command: Command): Promise<CommandHandlerResp> {
+        throw new Error("Method not implemented.");
+    }
 }

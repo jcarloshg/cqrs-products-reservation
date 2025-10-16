@@ -6,8 +6,8 @@ export type StockReservationInfo = {
     quantity: number;
 };
 
-export class StockReservedDomainEvent extends DomainEvent {
-    public readonly eventName = "stock.reserved";
+export class StockIncreaseReservationQuantityDomainEvent extends DomainEvent {
+    public readonly eventName = "STOCK.INCREASE_RESERVATION_QUANTITY";
 
     public readonly stock: StockProps;
     public readonly reservationStock: StockReservationInfo;

@@ -18,7 +18,7 @@ export class CreateReservationStockCommand implements Command {
 
     constructor(props: { [key: string]: any }) {
         const parsed = CreateReservationStockCommandSchema.safeParse(props);
-        if (parsed.success === false) throw new Error("The object is invalid.");
+        if (parsed.success === false) throw new Error("The reservation's properties are invalid.");
         this.createReservationStockCommandProps = parsed.data;
     }
 }

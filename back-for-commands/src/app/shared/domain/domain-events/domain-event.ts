@@ -8,4 +8,8 @@ export abstract class DomainEvent {
         this.occurredOn = new Date();
         this.aggregateId = aggregateId;
     }
+
+    public static get eventName(): string {
+        return this.prototype.eventName;
+    }
 }

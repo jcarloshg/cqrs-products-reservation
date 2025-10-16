@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ModelError } from "@/app/shared/domain/errors/models.error";
+import { ZodError } from "@/app/shared/domain/errors/zod.error";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
 import { CreateProductDomainEvent } from "../domain-events/create-product.domain-event";
 
@@ -37,7 +37,7 @@ export class ProductToCreate extends AggregateRoot {
 
     public static parse(data: { [key: string]: any }): ProductToCreateProps {
         const parsed = ProductToCreateScheme.safeParse(data);
-        if (parsed.success === false) throw new ModelError("Product", parsed.error);
+        if (parsed.success === false) throw new ZodError("Product", parsed.error);
         return parsed.data;
     }
 }
