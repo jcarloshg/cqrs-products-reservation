@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
-import { enviromentVariables } from "../utils/enviroment-variables";
+import { enviromentVariables } from "../../utils/enviroment-variables";
+
 
 export class PostgresManager {
     private static instance: PostgresManager;

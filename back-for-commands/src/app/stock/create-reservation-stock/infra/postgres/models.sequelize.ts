@@ -1,5 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import { PostgresManager } from "../../../../shared/infrastructure/postgres/postgres-manager";
+
+import { PostgresManager } from "@/app/shared/infrastructure/repository/postgres/postgres-manager";
+
 
 // Get the sequelize instance
 const sequelize = PostgresManager.getInstance().getSequelize();

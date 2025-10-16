@@ -1,5 +1,5 @@
 import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
-import { OpenFilesInMemory } from '@/app/shared/infrastructure/in-memory/open-files.in-memory';
+import { OpenFilesInMemory } from '@/app/shared/infrastructure/repository/in-memory/open-files.in-memory';
 import { ReservationStock } from "../../domain/entities/reservation-stock.entity";
 
 export class CreateReservationStockInMemory

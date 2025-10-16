@@ -1,5 +1,5 @@
-import { EventPublisherInMemory } from "@/app/shared/infrastructure/in-memory/even-publisher.in-memory";
-import { EventBusInMemory } from "@/app/shared/infrastructure/in-memory/event-bus.in-memeory";
+import { EventPublisherInMemory } from "@/app/shared/infrastructure/repository/in-memory/even-publisher.in-memory";
+import { EventBusInMemory } from "@/app/shared/infrastructure/repository/in-memory/event-bus.in-memeory";
 import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command-hanlder";
 import { SendNotificationEventHandler } from "@/app/stock/create-reservation-stock/application/events/send-notification.event-handler";
 import {

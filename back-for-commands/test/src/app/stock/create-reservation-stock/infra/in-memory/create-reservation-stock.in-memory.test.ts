@@ -1,4 +1,4 @@
-import { OpenFilesInMemory } from "@/app/shared/infrastructure/in-memory/open-files.in-memory";
+import { OpenFilesInMemory } from "@/app/shared/infrastructure/repository/in-memory/open-files.in-memory";
 import { ReservationStatus, ReservationStock, ReservationStockProps } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 import { CreateReservationStockInMemory } from "@/app/stock/create-reservation-stock/infra/in-memory/create-reservation-stock.in-memory";
 
