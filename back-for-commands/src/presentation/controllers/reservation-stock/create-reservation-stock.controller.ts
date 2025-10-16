@@ -66,7 +66,6 @@ export const createReservationStockController = async (
             const response = error.toCustomResponse().toCommandHandlerResp();
             return res.status(response.code).json(response);
         }
-
         const response = CustomResponse.internalServerError().toCommandHandlerResp();
         res.status(response.code).json(response);
     }

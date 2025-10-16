@@ -11,12 +11,11 @@ export enum HTTPMethod {
 export const reservationsStockRoute = async (app: Express) => {
     const router = Router();
 
+    router.get("/health", (req, res) => {
+        res.send("Reservations Stock Service is up and running!");
+    });
     router.post("/", createReservationStockController);
-    // router.get("/", getProductsByFilters);
     // router.get("/cursor", getProductsByCursor);
-
-    console.log(`router.post: `, "router.post");
-    console.log(`router.all: `, router.all);
 
     app.use("/api/reservationsStock/v1", router);
 }
