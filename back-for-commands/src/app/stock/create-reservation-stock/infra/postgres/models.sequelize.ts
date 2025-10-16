@@ -50,7 +50,7 @@ interface ReservationCreationAttributes
     extends Optional<ReservationAttributes, "uuid"> { }
 
 // User Model
-export class User
+export class UserFromDB
     extends Model<UserAttributes, UserCreationAttributes>
     implements UserAttributes {
     public uuid!: string;
@@ -58,7 +58,7 @@ export class User
     public password!: string;
 }
 
-User.init(
+UserFromDB.init(
     {
         uuid: {
             type: DataTypes.UUID,
@@ -187,7 +187,7 @@ Reservation.init(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: User,
+                model: UserFromDB,
                 key: "uuid",
             },
         },
@@ -236,12 +236,12 @@ StockForDB.belongsTo(ProductForDB, {
 });
 
 // User has many Reservations
-User.hasMany(Reservation, {
+UserFromDB.hasMany(Reservation, {
     foreignKey: "user_uuid",
     as: "reservations",
 });
 
-Reservation.belongsTo(User, {
+Reservation.belongsTo(UserFromDB, {
     foreignKey: "user_uuid",
     as: "user",
 });

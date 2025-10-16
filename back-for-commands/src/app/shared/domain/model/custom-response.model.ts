@@ -11,8 +11,8 @@ export class CustomResponse<T = undefined> {
         const response: CommandHandlerResp<T> = {
             code: this.code,
             message: this.message,
-            data: this.data
-        }
+            data: this.data,
+        };
         return response;
     }
 
@@ -20,16 +20,18 @@ export class CustomResponse<T = undefined> {
     // 200
     // ============================================================
 
-    static ok<T>(data: T, message: string = "Request was successful"): CustomResponse<T> {
+    static ok<T>(
+        data: T,
+        message: string = "Request was successful"
+    ): CustomResponse<T> {
         return new CustomResponse<T>(200, message, data);
     }
 
-    static created<T>(objectCreated: T): CustomResponse<T> {
-        return new CustomResponse<T>(
-            201,
-            "Resource created successfully",
-            objectCreated
-        );
+    static created<T>(
+        objectCreated: T,
+        message: string = "Resource created successfully"
+    ): CustomResponse<T> {
+        return new CustomResponse<T>(201, message, objectCreated);
     }
 
     // ============================================================
@@ -49,10 +51,6 @@ export class CustomResponse<T = undefined> {
     // ============================================================
 
     static internalServerError(): CustomResponse<undefined> {
-        return new CustomResponse(
-            500,
-            "Internal server error",
-            undefined
-        );
+        return new CustomResponse(500, "Internal server error", undefined);
     }
 }
