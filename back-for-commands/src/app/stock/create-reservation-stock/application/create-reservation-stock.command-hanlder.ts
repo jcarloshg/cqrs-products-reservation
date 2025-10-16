@@ -21,7 +21,6 @@ import { UpdateReservedStockRepository } from "@/app/stock/create-reservation-st
 // application
 import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
 
-
 export interface CreateReservationStockResponse {
     reservationStock: ReservationStockProps;
 }
@@ -96,7 +95,10 @@ export class CreateReservationStockCommandHandler
                 reservationStock: reservationStock.getProps(),
             };
             const customResponse =
-                CustomResponse.created<CreateReservationStockResponse>(resp);
+                CustomResponse.created<CreateReservationStockResponse>(
+                    resp,
+                    "Reservation stock created successfully"
+                );
             const commandHandlerResp = customResponse.toCommandHandlerResp();
             return commandHandlerResp;
         } catch (error) {
