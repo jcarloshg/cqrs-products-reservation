@@ -2,6 +2,8 @@ services:
   back-commands:
     build: ./back-for-commands
     container_name: back-commands
+    volumes:
+      - ./back-for-commands/src:/app/src
     ports:
       - 3000:3000
     environment:
@@ -31,3 +33,7 @@ services:
 volumes:
   db-commands-vol:
     driver: local
+    # driver_opts:
+    #   type: none
+    #   device: ./database-volume
+    #   o: bind
