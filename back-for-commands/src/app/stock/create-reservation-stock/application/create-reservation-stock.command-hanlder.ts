@@ -5,7 +5,7 @@ import {
 } from "@/app/shared/domain/domain-events/command-handler";
 import { EventPublisher } from "@/app/shared/domain/domain-events/event-publisher";
 import { DomainError } from "@/app/shared/domain/errors/domain.error";
-import { ZodError } from "@/app/shared/domain/errors/zod.error";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 // domain/entities
 import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
@@ -105,7 +105,7 @@ export class CreateReservationStockCommandHandler
             if (error instanceof DomainError)
                 return error.toCustomResponse().toCommandHandlerResp();
 
-            if (error instanceof ZodError)
+            if (error instanceof OwnZodError)
                 return error.toCustomResponse().toCommandHandlerResp();
 
             const message = error instanceof Error ? error.message : String(error);

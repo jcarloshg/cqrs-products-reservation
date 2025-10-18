@@ -1,7 +1,7 @@
 export class CrudRepository<T> {
     constructor() { }
 
-    create(item: T): Promise<T> {
+    create(item: T): Promise<T | null> {
         throw new Error("Method not implemented.");
     }
 

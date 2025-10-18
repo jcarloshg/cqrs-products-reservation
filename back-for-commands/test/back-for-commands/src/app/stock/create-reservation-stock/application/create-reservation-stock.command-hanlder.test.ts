@@ -1,4 +1,4 @@
-import { ZodError } from "@/app/shared/domain/errors/zod.error";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-bus.own";
 import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
 import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command";
@@ -195,8 +195,8 @@ describe("create-reservation-stock.command-hanlder.test", () => {
                 status: ReservationStatus.PENDING,
             });
         } catch (error) {
-            expect(error).toBeInstanceOf(ZodError);
-            const zodError = error as ZodError;
+            expect(error).toBeInstanceOf(OwnZodError);
+            const zodError = error as OwnZodError;
             expect(zodError.modelsErrorRequest.entity).toBe("CreateReservationStockCommand");
             expect(zodError.modelsErrorRequest.userError).toMatch("quantity - Too small: expected number to be >=1");
             return;

@@ -9,13 +9,13 @@ export interface CreateProductCommandProps {
 
 export class CreateProductCommand implements Command {
     public readonly uuid: string;
-    public readonly name: string;
+    public readonly COMMAND_NAME: string;
     public readonly description: string;
     public readonly sku: string;
 
     constructor(props: CreateProductCommandProps) {
         this.uuid = props.uuid;
-        this.name = props.name;
+        this.COMMAND_NAME = props.name;
         this.description = props.description;
         this.sku = props.sku;
     }

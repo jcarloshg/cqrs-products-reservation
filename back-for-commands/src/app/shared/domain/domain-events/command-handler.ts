@@ -6,8 +6,8 @@ export type CommandHandlerResp<R = undefined> = {
     data: R | undefined;
 };
 
-export class CommandHandler<CommandHandlerResp> {
-    public async handler(command: Command): Promise<CommandHandlerResp> {
+export class CommandHandler<T extends Command> {
+    public async handler(command: T): Promise<CommandHandlerResp> {
         throw new Error("Method not implemented.");
     }
 }

@@ -7,7 +7,7 @@ export interface ModelsErrorRequest {
     developerError: string[];
 }
 
-export class ZodError extends Error {
+export class OwnZodError extends Error {
     public readonly modelsErrorRequest: ModelsErrorRequest;
 
     constructor(entity: string, error: z.ZodError) {

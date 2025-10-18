@@ -1,4 +1,4 @@
-import { ZodError } from "@/app/shared/domain/errors/zod.error";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { z } from "zod";
 
 const ProductSchema = z.object({
@@ -34,25 +34,25 @@ export type ProductToDelete = Product;
 export class ProductValidator {
     public static toCreate(data: { [key: string]: any }): ProductToCreate {
         const parsed = ProductToCreateScheme.safeParse(data);
-        if (parsed.success === false) throw new ZodError("Product", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("Product", parsed.error);
         return parsed.data;
     }
 
     public static toRead(data: { [key: string]: any }): ProductToRead {
         const parsed = ProductSchema.safeParse(data);
-        if (parsed.success === false) throw new ZodError("Product", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("Product", parsed.error);
         return parsed.data;
     }
 
     public static toUpdate(data: { [key: string]: any }): ProductToUpdate {
         const parsed = ProductSchema.safeParse(data);
-        if (parsed.success === false) throw new ZodError("Product", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("Product", parsed.error);
         return parsed.data;
     }
 
     public static toDelete(data: { [key: string]: any }): ProductToDelete {
         const parsed = ProductSchema.safeParse(data);
-        if (parsed.success === false) throw new ZodError("Product", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("Product", parsed.error);
         return parsed.data;
     }
 

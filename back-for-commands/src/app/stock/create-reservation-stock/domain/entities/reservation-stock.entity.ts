@@ -1,7 +1,7 @@
 import z from "zod";
 
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
-import { ZodError } from "@/app/shared/domain/errors/zod.error";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import {
     EntityDomain,
     EntityProps,
@@ -46,7 +46,7 @@ export class ReservationStock implements EntityDomain<ReservationStockProps> {
 
     public static parse(data: EntityPropsRawData): ReservationStockProps {
         const parsed = ProductToCreateScheme.safeParse(data);
-        if (parsed.success === false) throw new ZodError("ReservationStock", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("ReservationStock", parsed.error);
         return parsed.data;
     }
 

@@ -1,6 +1,6 @@
 import z from "zod";
 import { Command } from "@/app/shared/domain/domain-events/command";
-import { ZodError } from "@/app/shared/domain/errors/zod.error";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 
 const CreateReservationStockCommandSchema = z.object({
     uuid: z.uuid(),
@@ -15,11 +15,12 @@ export type CreateReservationStockCommandProps = z.infer<
 >;
 
 export class CreateReservationStockCommand implements Command {
+    public readonly COMMAND_NAME: string = "CreateReservationStockCommand";
     public readonly createReservationStockCommandProps: CreateReservationStockCommandProps;
 
     constructor(props: { [key: string]: any }) {
         const parsed = CreateReservationStockCommandSchema.safeParse(props);
-        if (parsed.success === false) throw new ZodError("CreateReservationStockCommand", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("CreateReservationStockCommand", parsed.error);
         this.createReservationStockCommandProps = parsed.data;
     }
 }
