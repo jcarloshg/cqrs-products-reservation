@@ -7,7 +7,6 @@ import {
     ConfirmReservationUseCase,
 } from "@/app/stock/confirm-reservation/domain/confirm-reservation.use-case";
 import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-import { beforeEach } from "node:test";
 
 describe("confirm-reservation.use-case.test", () => {
 
@@ -32,14 +31,14 @@ describe("confirm-reservation.use-case.test", () => {
     it("should be defined", async () => {
         const request: ConfirmReservationRequest = {
             data: {
-                uuid: "asdasd",
-                productId: "asdasd",
-                newStatus: "CONFIRMED",
+                uuid: validUuid,
+                productId: validProductId,
+                newStatus: validStatus,
             },
         };
         const res = await useCase.execute(request);
         expect(res).toBeDefined();
-        expect(res.message).toBe("OK");
+        expect(res.message).toBe("Reservation confirmed successfully.");
         expect(res.code).toBe(200);
     });
 });

@@ -21,7 +21,7 @@ export class ConfirmReservationUseCase {
             console.log(`confirmReservationCommand: `, confirmReservationCommand);
             await this.commandBus.dispatch(confirmReservationCommand);
             const response: ConfirmReservationResponse = { reservationConfirmed: {} };
-            return CustomResponse.ok(response);
+            return CustomResponse.ok(response, "Reservation confirmed successfully.");
         } catch (error) {
             if (error instanceof OwnZodError) return error.toCustomResponse();
             return CustomResponse.internalServerError();
