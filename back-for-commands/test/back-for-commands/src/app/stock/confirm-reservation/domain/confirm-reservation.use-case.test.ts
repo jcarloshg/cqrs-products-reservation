@@ -6,10 +6,14 @@ import {
     ConfirmReservationRequest,
     ConfirmReservationUseCase,
 } from "@/app/stock/confirm-reservation/domain/confirm-reservation.use-case";
-import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
+import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
+import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-bus.own";
+import { ReservationStockRepositoryMoc } from "../../../shared/infrastructure/repository/postgres/reservation-stock.repository.moc";
+import { NotifyToOwnerReservationSetAsConfirmedEventHandler } from "@/app/stock/confirm-reservation/domain/domain-events/reservation-set-as-confirmed.event-hanler";
+import { ReservationSetAsConfirmedDomainEvent } from "@/app/stock/confirm-reservation/domain/domain-events/reservation-set-as-confirmed.domain-event";
 
 describe("confirm-reservation.use-case.test", () => {
-
     const validUuid = "123e4567-e89b-12d3-a456-426614174000";
     const validProductId = "987fcdeb-51a2-43d1-b123-456789abcdef";
     const validStatus = ReservationStatus.CONFIRMED;
@@ -17,14 +21,37 @@ describe("confirm-reservation.use-case.test", () => {
     let useCase: ConfirmReservationUseCase;
 
     beforeEach(() => {
+        // ─────────────────────────────────────
+        // domain events
+        // ─────────────────────────────────────
+        const eventBusOwn = new EventBusOwn();
+        const notifyToOwnerReservationSetAsConfirmedEventHandler =
+            new NotifyToOwnerReservationSetAsConfirmedEventHandler();
+        eventBusOwn.subscribe(
+            "RESERVATION.CONFIRMED",
+            notifyToOwnerReservationSetAsConfirmedEventHandler
+        );
+        const eventPublisherOwn = new EventPublisherOwn(eventBusOwn);
+
+        // ─────────────────────────────────────
+        // command handlers
+        // ─────────────────────────────────────
+        const reservationStockRepositoryMoc = new ReservationStockRepositoryMoc();
         const confirmReservationCommandHandler =
-            new ConfirmReservationCommandHandler();
+            new ConfirmReservationCommandHandler(
+                reservationStockRepositoryMoc,
+                eventPublisherOwn
+            );
         const commandHandlers = new CommandHandlers();
         commandHandlers.register(
             ConfirmReservationCommand.COMMAND_NAME,
             confirmReservationCommandHandler
         );
         const commandBus = new CommandBus(commandHandlers);
+
+        // ─────────────────────────────────────
+        // init use case
+        // ─────────────────────────────────────
         useCase = new ConfirmReservationUseCase(commandBus);
     });
 

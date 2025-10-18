@@ -7,8 +7,8 @@ export class CustomResponse<T = undefined> {
         public readonly data: T | undefined = undefined
     ) { }
 
-    public toCommandHandlerResp(): CommandHandlerResp<T> {
-        const response: CommandHandlerResp<T> = {
+    public toCommandHandlerResp(): CommandHandlerResp {
+        const response: CommandHandlerResp = {
             code: this.code,
             message: this.message,
             data: this.data,

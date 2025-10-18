@@ -37,7 +37,7 @@ interface StockAttributes {
 interface StockCreationAttributes extends Optional<StockAttributes, "uuid"> { }
 
 // Reservation model interfaces
-interface ReservationAttributes {
+export interface ReservationAttributes {
     uuid: string;
     user_uuid: string;
     product_id: string;
@@ -165,7 +165,7 @@ StockForDB.init(
 );
 
 // Reservation Model
-export class Reservation
+export class ReservationForDB
     extends Model<ReservationAttributes, ReservationCreationAttributes>
     implements ReservationAttributes {
     public uuid!: string;
@@ -176,7 +176,7 @@ export class Reservation
     public expires_at!: Date;
 }
 
-Reservation.init(
+ReservationForDB.init(
     {
         uuid: {
             type: DataTypes.UUID,
@@ -236,23 +236,23 @@ StockForDB.belongsTo(ProductForDB, {
 });
 
 // User has many Reservations
-UserFromDB.hasMany(Reservation, {
+UserFromDB.hasMany(ReservationForDB, {
     foreignKey: "user_uuid",
     as: "reservations",
 });
 
-Reservation.belongsTo(UserFromDB, {
+ReservationForDB.belongsTo(UserFromDB, {
     foreignKey: "user_uuid",
     as: "user",
 });
 
 // Product has many Reservations
-ProductForDB.hasMany(Reservation, {
+ProductForDB.hasMany(ReservationForDB, {
     foreignKey: "product_id",
     as: "reservations",
 });
 
-Reservation.belongsTo(ProductForDB, {
+ReservationForDB.belongsTo(ProductForDB, {
     foreignKey: "product_id",
     as: "product",
 });

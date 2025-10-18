@@ -1,5 +1,6 @@
 import { StockProof } from "@/app/stock/create-reservation-stock/domain/entities/proof";
-import { ReservationStatus, ReservationStockProps } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStockProps } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
 
 describe('proof.test', () => {
     it('should be defined', () => {

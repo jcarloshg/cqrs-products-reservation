@@ -13,6 +13,32 @@ export interface EntityDomain<T> {
     // fromPrimitives(props: { [key: string]: any }): EntityDomain<T>;
 }
 
+// export class EntityDomainV2<T> {
+//     private readonly _entityProps: EntityProps<T>;
+//     constructor(props: EntityPropsRawData) {
+//         const parsedProps = this.parse<T>(props);
+//         this._entityProps = new EntityProps<T>(
+//             parsedProps,
+//             EntityDomainV2.parse
+//         );
+//     }
+//     public getProps(): Readonly<T> {
+//         return this._entityProps.getCopy();
+//     }
+
+//     public getAggregateRoot(): AggregateRoot {
+//         return this._entityProps.getAggregateRoot();
+//     }
+
+//     public parse<T>(data: EntityPropsRawData): T {
+//         throw new Error("EntityDomainV2.parse - Method not implemented.");
+//     }
+
+//     public update(value: Partial<T>) {
+//         this._entityProps.update(value);
+//     }
+// }
+
 // ─────────────────────────────────────
 // ─────────────────────────────────────
 // Entity Props

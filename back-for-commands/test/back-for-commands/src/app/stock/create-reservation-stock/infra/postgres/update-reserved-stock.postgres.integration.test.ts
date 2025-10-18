@@ -1,5 +1,5 @@
 import { UpdateReservedStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/update-reserved-stock.postgres";
-import { ProductForDB, StockForDB } from "@/app/stock/create-reservation-stock/infra/postgres/models.sequelize";
+import { ProductForDB, StockForDB } from "@/app/shared/infrastructure/repository/postgres/models.sequelize";
 import { UpdateStockProps } from "@/app/stock/create-reservation-stock/domain/repository/update-reserved-stock.repository";
 import { PostgresManager } from "@/app/shared/infrastructure/repository/postgres/postgres-manager";
 

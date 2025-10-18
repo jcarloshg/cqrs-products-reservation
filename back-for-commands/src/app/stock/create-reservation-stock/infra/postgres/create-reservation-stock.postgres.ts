@@ -1,6 +1,6 @@
 import { ReservationStock } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 import { CreateReservationStockRepository } from "../../domain/repository/create-reservation-stock.repository";
-import { Reservation } from "./models.sequelize";
+import { ReservationForDB } from "../../../../shared/infrastructure/repository/postgres/models.sequelize";
 
 export class CreateReservationStockPostgres
     implements CreateReservationStockRepository {
@@ -9,7 +9,7 @@ export class CreateReservationStockPostgres
     public async run(entity: ReservationStock): Promise<ReservationStock | null> {
         try {
             const props = entity.getProps();
-            const result = await Reservation.create({
+            const result = await ReservationForDB.create({
                 uuid: props.uuid,
                 product_id: props.productId,
                 quantity: props.quantity,

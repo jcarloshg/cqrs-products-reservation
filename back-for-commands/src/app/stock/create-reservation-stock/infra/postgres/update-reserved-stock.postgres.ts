@@ -1,4 +1,4 @@
-import { StockForDB } from "./models.sequelize";
+import { StockForDB } from "../../../../shared/infrastructure/repository/postgres/models.sequelize";
 import {
     UpdateReservedStockRepository,
     UpdateStockProps,

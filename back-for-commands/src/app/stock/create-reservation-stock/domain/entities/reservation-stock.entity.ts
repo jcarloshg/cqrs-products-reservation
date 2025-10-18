@@ -8,13 +8,7 @@ import {
     EntityPropsRawData,
 } from "@/app/shared/domain/model/entity";
 import { CreateReservationStockDomainEvent } from "../domain-events/create-reservation-stock.doamin-event";
-
-export enum ReservationStatus {
-    PENDING = "PENDING",
-    CONFIRMED = "CONFIRMED",
-    CANCELLED = "CANCELLED",
-    EXPIRED = "EXPIRED",
-}
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
 
 const ProductToCreateScheme = z.object({
     uuid: z.uuid(),

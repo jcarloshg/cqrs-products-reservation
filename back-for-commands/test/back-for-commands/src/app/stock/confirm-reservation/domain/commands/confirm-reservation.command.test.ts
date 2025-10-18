@@ -1,5 +1,5 @@
 import { ConfirmReservationCommand } from "@/app/stock/confirm-reservation/domain/commands/confirm-reservation.command"
-import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 
 describe('confirm-reservation.command.test', () => {

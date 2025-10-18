@@ -8,6 +8,7 @@ export class EventBusOwn implements EventBus {
     constructor() { }
 
     public subscribe<T extends DomainEvent>(eventType: string, handler: EventHandler<T>): void {
+        console.log(`eventType: `, eventType);
         if (!this.handlers.has(eventType)) {
             this.handlers.set(eventType, []);
         }

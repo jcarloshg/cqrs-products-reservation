@@ -1,5 +1,5 @@
 import z from "zod";
-import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { Command } from "@/app/shared/domain/domain-events/command";
 

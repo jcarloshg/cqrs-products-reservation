@@ -1,4 +1,4 @@
-import { StockForDB } from "./models.sequelize";
+import { StockForDB } from "../../../../shared/infrastructure/repository/postgres/models.sequelize";
 
 import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
 import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";

@@ -8,15 +8,15 @@ import { NotifyStockUpdatedEventHandler } from "@/app/stock/create-reservation-s
 import { NotifyStoreEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-store.event-handler";
 import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 import { StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
-import { ReservationStatus } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
 import { CreateReservationStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/create-reservation-stock.postgres";
 import { GetStockByProductIdPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/get-stock-by-product-id.postgres";
 import {
     ProductForDB,
-    Reservation,
+    ReservationForDB,
     StockForDB,
     UserFromDB,
-} from "@/app/stock/create-reservation-stock/infra/postgres/models.sequelize";
+} from "@/app/shared/infrastructure/repository/postgres/models.sequelize";
 import { UpdateReservedStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/update-reserved-stock.postgres";
 
 describe("create-reservation-stock.command-hanlder.test", () => {
@@ -103,7 +103,7 @@ describe("create-reservation-stock.command-hanlder.test", () => {
         // 4. Delete users
         try {
             // Clean up any reservations that might have been created during the test
-            await Reservation.destroy({
+            await ReservationForDB.destroy({
                 where: { uuid: testReservationId },
             });
             await StockForDB.destroy({
