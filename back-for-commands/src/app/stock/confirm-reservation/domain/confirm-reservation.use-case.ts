@@ -18,11 +18,9 @@ export class ConfirmReservationUseCase {
             const confirmReservationCommand = new ConfirmReservationCommand(
                 request.data
             );
-
+            console.log(`confirmReservationCommand: `, confirmReservationCommand);
             await this.commandBus.dispatch(confirmReservationCommand);
-
             const response: ConfirmReservationResponse = { reservationConfirmed: {} };
-
             return CustomResponse.ok(response);
         } catch (error) {
             if (error instanceof OwnZodError) return error.toCustomResponse();

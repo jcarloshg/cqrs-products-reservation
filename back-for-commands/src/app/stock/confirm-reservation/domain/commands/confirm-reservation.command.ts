@@ -4,8 +4,7 @@ import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { Command } from "@/app/shared/domain/domain-events/command";
 
 export class ConfirmReservationCommand implements Command {
-    
-    public readonly COMMAND_NAME: string = "ConfirmReservationCommand";
+
     public data: ConfirmReservationCommandProps;
 
     constructor(props: { [key: string]: any }) {
@@ -14,6 +13,10 @@ export class ConfirmReservationCommand implements Command {
             throw new OwnZodError("ConfirmReservationCommand", parsed.error);
         }
         this.data = parsed.data;
+    }
+
+    public static get COMMAND_NAME(): string {
+        return "ConfirmReservationCommand";
     }
 }
 

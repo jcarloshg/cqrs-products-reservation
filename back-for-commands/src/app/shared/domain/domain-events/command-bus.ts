@@ -12,10 +12,11 @@ export class CommandBus {
     }
 
     public async dispatch(command: Command): Promise<void> {
-        const handler = this.commandHandlers.get(command.COMMAND_NAME);
+        const commandName = (command.constructor as typeof Command).COMMAND_NAME;
+        const handler = this.commandHandlers.get(commandName);
         if (!handler) {
-            // throw new Error(`No handler found for command: ${command.name}`);
-            console.log(`No handler found for command: ${command.COMMAND_NAME}`);
+            // throw new Error(`No handler found for command: ${commandName}`);
+            console.log(`No handler found for command: ${commandName}`);
             return;
         }
         await handler.handler(command);
