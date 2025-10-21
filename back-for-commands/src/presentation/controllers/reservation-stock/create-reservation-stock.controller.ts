@@ -10,7 +10,7 @@ import { NotifyReservationOwnerEventHandler } from "@/app/stock/create-reservati
 import { StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 import { NotifyStockUpdatedEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-stock-updated.event-hanlder";
 import { NotifyStoreEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-store.event-handler";
-import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command";
+import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/domain/commands/create-reservation-stock.command";
 import { DomainError } from "@/app/shared/domain/errors/domain.error";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 

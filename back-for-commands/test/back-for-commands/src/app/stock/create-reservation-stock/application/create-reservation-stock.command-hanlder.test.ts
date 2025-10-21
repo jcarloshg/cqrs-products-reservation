@@ -1,7 +1,7 @@
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-bus.own";
 import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
-import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/application/commands/create-reservation-stock.command";
+import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/domain/commands/create-reservation-stock.command";
 import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/create-reservation-stock.command-hanlder";
 import { NotifyReservationOwnerEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-reservation-owner.event-handler";
 import { NotifyStockUpdatedEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-stock-updated.event-hanlder";

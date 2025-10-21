@@ -2,7 +2,21 @@ import z from "zod";
 import { Command } from "@/app/shared/domain/domain-events/command";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 
-const CreateReservationStockCommandSchema = z.object({
+export class CreateReservationStockCommand implements Command {
+    public readonly createReservationStockCommandProps: CreateReservationStockCommandProps;
+
+    constructor(props: { [key: string]: any }) {
+        const parsed = CommanSchema.safeParse(props);
+        if (parsed.success === false) throw new OwnZodError("CreateReservationStockCommand", parsed.error);
+        this.createReservationStockCommandProps = parsed.data;
+    }
+
+    public static get COMMAND_NAME(): string {
+        return "CreateReservationStockCommand";
+    }
+}
+
+const CommanSchema = z.object({
     uuid: z.uuid(),
     ownerUuid: z.uuid(),
     productId: z.uuid(),
@@ -10,17 +24,4 @@ const CreateReservationStockCommandSchema = z.object({
     status: z.enum(["PENDING"]),
     expiresAt: z.date(),
 });
-export type CreateReservationStockCommandProps = z.infer<
-    typeof CreateReservationStockCommandSchema
->;
-
-export class CreateReservationStockCommand implements Command {
-    public readonly COMMAND_NAME: string = "CreateReservationStockCommand";
-    public readonly createReservationStockCommandProps: CreateReservationStockCommandProps;
-
-    constructor(props: { [key: string]: any }) {
-        const parsed = CreateReservationStockCommandSchema.safeParse(props);
-        if (parsed.success === false) throw new OwnZodError("CreateReservationStockCommand", parsed.error);
-        this.createReservationStockCommandProps = parsed.data;
-    }
-}
+export type CreateReservationStockCommandProps = z.infer<typeof CommanSchema>;

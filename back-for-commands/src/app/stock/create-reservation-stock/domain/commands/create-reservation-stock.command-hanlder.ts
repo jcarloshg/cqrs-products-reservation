@@ -8,28 +8,25 @@ import { DomainError } from "@/app/shared/domain/errors/domain.error";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 // domain/entities
-import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
+import { Stock, StockReservationInfo } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
 import {
     ReservationStock,
     ReservationStockProps,
 } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-import { StockReservationInfo } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
+
 // domain/repository
 import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
 import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
 import { UpdateReservedStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/update-reserved-stock.repository";
 // application
-import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
+import { CreateReservationStockCommand } from "./create-reservation-stock.command";
 
 export interface CreateReservationStockResponse {
     reservationStock: ReservationStockProps;
 }
 
 export class CreateReservationStockCommandHandler
-    implements
-    CommandHandler<
-        CommandHandlerResp<CreateReservationStockResponse | undefined>
-    > {
+    implements CommandHandler<CreateReservationStockCommand> {
     constructor(
         private readonly _CreateReservationStockRepository: CreateReservationStockRepository,
         private readonly _GetStockByProductIdRepository: GetStockByProductIdRepository,
@@ -39,7 +36,7 @@ export class CreateReservationStockCommandHandler
 
     public async handler(
         command: CreateReservationStockCommand
-    ): Promise<CommandHandlerResp<CreateReservationStockResponse | undefined>> {
+    ): Promise<CommandHandlerResp> {
         try {
             // ─────────────────────────────────────
             // 1. System validates product exists

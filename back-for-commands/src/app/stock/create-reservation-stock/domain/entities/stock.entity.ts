@@ -1,7 +1,7 @@
 import z from "zod";
 
 // import { StockReservedDomainEvent } from "../domain-events/StockReservedDomainEvent";
-import { StockReservationInfo, StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
+// import { StockReservationInfo, StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
 import {
     EntityDomain,
@@ -70,10 +70,16 @@ export class Stock implements EntityDomain<StockProps> {
         });
 
         // 4. System records domain event
-        const stockReservedDomainEvent = new StockIncreaseReservationQuantityDomainEvent(
-            this._entityProps.getCopy(),
-            reservationStock
-        );
-        this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
+        // const stockReservedDomainEvent = new StockIncreaseReservationQuantityDomainEvent(
+        //     this._entityProps.getCopy(),
+        //     reservationStock
+        // );
+        // this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
     }
+}
+
+
+export interface StockReservationInfo {
+    reservationUuid: string;
+    quantity: number;
 }
