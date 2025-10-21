@@ -1,7 +1,7 @@
 import z from "zod";
 
 // import { StockReservedDomainEvent } from "../domain-events/StockReservedDomainEvent";
-// import { StockReservationInfo, StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
+import { StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
 import {
     EntityDomain,
@@ -40,7 +40,10 @@ export class Stock implements EntityDomain<StockProps> {
     }
 
     public reserve(reservationStock: StockReservationInfo): void {
-        // 1. System checks available stock
+        // ─────────────────────────────────────
+        // 1. Business rules
+        // ─────────────────────────────────────
+        // System checks available stock
         const props = this.getProps();
         const available_quantity = props.available_quantity;
         const reserved_quantity = props.reserved_quantity;
@@ -53,7 +56,7 @@ export class Stock implements EntityDomain<StockProps> {
             }
         );
 
-        // 2. System checks if available stock is sufficient for the reservation
+        // System checks if available stock is sufficient for the reservation
         const reservedQuantity = reservationStock.quantity;
         if (availableQuantity < reservedQuantity) throw new DomainError(
             "Insufficient stock available for the reservation",
@@ -63,18 +66,20 @@ export class Stock implements EntityDomain<StockProps> {
             }
         );
 
-        // 3. System updates reserved quantity
+        // System updates reserved quantity
         const new_reserved_quantity = reserved_quantity + reservedQuantity;
         this._entityProps.update({
             reserved_quantity: new_reserved_quantity,
         });
 
-        // 4. System records domain event
-        // const stockReservedDomainEvent = new StockIncreaseReservationQuantityDomainEvent(
-        //     this._entityProps.getCopy(),
-        //     reservationStock
-        // );
-        // this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
+        // ─────────────────────────────────────
+        // 2. Manage domain events
+        // ─────────────────────────────────────
+        const stockReservedDomainEvent = new StockIncreaseReservationQuantityDomainEvent(
+            this._entityProps.getCopy(),
+            reservationStock
+        );
+        this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
     }
 }
 

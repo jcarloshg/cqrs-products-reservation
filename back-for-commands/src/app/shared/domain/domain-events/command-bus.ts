@@ -1,4 +1,5 @@
 import { Command } from "./command";
+import { CommandHandlerResp } from "./command-handler";
 import { CommandHandlers } from "./command-handlers";
 
 export class CommandBus {
@@ -11,14 +12,14 @@ export class CommandBus {
         this.commandHandlers = commandHandlers;
     }
 
-    public async dispatch(command: Command): Promise<void> {
+    public async dispatch(command: Command): Promise<CommandHandlerResp> {
         const commandName = (command.constructor as typeof Command).COMMAND_NAME;
         const handler = this.commandHandlers.get(commandName);
         if (!handler) {
-            // throw new Error(`No handler found for command: ${commandName}`);
             console.log(`No handler found for command: ${commandName}`);
-            return;
+            throw new Error(`No handler found for command: ${commandName}`);
+            // return;
         }
-        await handler.handler(command);
+        return await handler.handler(command);
     }
 }

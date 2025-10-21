@@ -11,6 +11,7 @@ import {
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { ReservationSetAsConfirmedDomainEvent } from "../domain-events/reservation-set-as-confirmed.domain-event";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
+import { DomainError } from "@/app/shared/domain/errors/domain.error";
 
 export class ReservationStockEntity implements EntityDomain<ReservationStockProps> {
 
@@ -48,14 +49,27 @@ export class ReservationStockEntity implements EntityDomain<ReservationStockProp
 
         // Validate current status
         if (dataToBusinessRules.status === ReservationStatus.CONFIRMED) {
-            throw new Error("Reservation is already confirmed.");
+            // throw new Error("Reservation is already confirmed.");
+            throw new DomainError(
+                "Reservation is already confirmed.",
+                {
+                    input: dataToBusinessRules,
+                }
+            );
             return;
         }
 
         // Validate expiration
         const isExpired = dataToBusinessRules.expiresAt.getTime() < Date.now();
         if (isExpired) {
-            throw new Error("Cannot confirm an expired reservation.");
+            // throw new Error("Cannot confirm an expired reservation.");
+            throw new DomainError(
+                "Cannot confirm an expired reservation.",
+                {
+                    input: dataToBusinessRules,
+                    output: { isExpired },
+                }
+            );
         }
 
         // Update status

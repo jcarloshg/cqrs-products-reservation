@@ -54,3 +54,4 @@ export class CustomResponse<T = undefined> {
         return new CustomResponse(500, "Internal server error", undefined);
     }
 }
+

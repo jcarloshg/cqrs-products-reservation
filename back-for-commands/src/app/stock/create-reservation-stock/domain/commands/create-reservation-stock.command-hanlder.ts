@@ -8,7 +8,10 @@ import { DomainError } from "@/app/shared/domain/errors/domain.error";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
 // domain/entities
-import { Stock, StockReservationInfo } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
+import {
+    Stock,
+    StockReservationInfo,
+} from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
 import {
     ReservationStock,
     ReservationStockProps,
@@ -38,9 +41,7 @@ export class CreateReservationStockCommandHandler
         command: CreateReservationStockCommand
     ): Promise<CommandHandlerResp> {
         try {
-            // ─────────────────────────────────────
             // 1. System validates product exists
-            // ─────────────────────────────────────
             const reservationStockProps = command.createReservationStockCommandProps;
             const stock: Stock | null =
                 await this._GetStockByProductIdRepository.findById(

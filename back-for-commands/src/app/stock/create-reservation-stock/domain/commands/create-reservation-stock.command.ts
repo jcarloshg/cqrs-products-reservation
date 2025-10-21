@@ -7,7 +7,8 @@ export class CreateReservationStockCommand implements Command {
 
     constructor(props: { [key: string]: any }) {
         const parsed = CommanSchema.safeParse(props);
-        if (parsed.success === false) throw new OwnZodError("CreateReservationStockCommand", parsed.error);
+        if (parsed.success === false)
+            throw new OwnZodError("CreateReservationStockCommand", parsed.error);
         this.createReservationStockCommandProps = parsed.data;
     }
 

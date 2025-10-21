@@ -1,6 +1,7 @@
 import { CommandBus } from "@/app/shared/domain/domain-events/command-bus";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
+import { CreateReservationStockCommand } from "./commands/create-reservation-stock.command";
 
 export class CreateReservationStockUseCase {
     private readonly _commandBus: CommandBus;
@@ -13,9 +14,10 @@ export class CreateReservationStockUseCase {
         request: CreateReservationStockRequest
     ): Promise<CustomResponse<CreateReservationStockResponse | undefined>> {
         try {
-
-            
-
+            const createReservationStockCommand = new CreateReservationStockCommand(
+                request.data
+            );
+            await this._commandBus.dispatch(createReservationStockCommand);
 
             const createReservationStockResponse: CreateReservationStockResponse = {
                 reservationStockCreated: {},

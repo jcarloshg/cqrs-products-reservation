@@ -4,7 +4,6 @@ import { ConfirmReservationCommand } from "./commands/confirm-reservation.comman
 import { CommandBus } from "@/app/shared/domain/domain-events/command-bus";
 
 export class ConfirmReservationUseCase {
-    
     private readonly commandBus: CommandBus;
 
     constructor(commandBus: CommandBus) {
@@ -18,9 +17,8 @@ export class ConfirmReservationUseCase {
             const confirmReservationCommand = new ConfirmReservationCommand(
                 request.data
             );
-            console.log(`confirmReservationCommand: `, confirmReservationCommand);
-            await this.commandBus.dispatch(confirmReservationCommand);
-            const response: ConfirmReservationResponse = { reservationConfirmed: {} };
+            const res = await this.commandBus.dispatch(confirmReservationCommand);
+            const response: ConfirmReservationResponse = { reservationConfirmed: res.data };
             return CustomResponse.ok(response, "Reservation confirmed successfully.");
         } catch (error) {
             if (error instanceof OwnZodError) return error.toCustomResponse();
