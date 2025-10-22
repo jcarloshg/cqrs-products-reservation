@@ -1,4 +1,3 @@
-// shared
 import {
     CommandHandler,
     CommandHandlerResp,
@@ -7,7 +6,6 @@ import { EventPublisher } from "@/app/shared/domain/domain-events/event-publishe
 import { DomainError } from "@/app/shared/domain/errors/domain.error";
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
-// domain/entities
 import {
     Stock,
     StockReservationInfo,
@@ -16,12 +14,9 @@ import {
     ReservationStock,
     ReservationStockProps,
 } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-
-// domain/repository
 import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
 import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
 import { UpdateReservedStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/update-reserved-stock.repository";
-// application
 import { CreateReservationStockCommand } from "./create-reservation-stock.command";
 
 export interface CreateReservationStockResponse {
@@ -41,16 +36,17 @@ export class CreateReservationStockCommandHandler
         command: CreateReservationStockCommand
     ): Promise<CommandHandlerResp> {
         try {
+
+            // ─────────────────────────────────────
             // 1. System validates product exists
+            // ─────────────────────────────────────
             const reservationStockProps = command.createReservationStockCommandProps;
-            const stock: Stock | null =
-                await this._GetStockByProductIdRepository.findById(
-                    reservationStockProps.productId
-                );
+            const stock: Stock | null = await this._GetStockByProductIdRepository
+                .findById(reservationStockProps.productId);
             if (!stock)
-                return CustomResponse.notFound(
-                    "Stock for the specified product not found"
-                ).toCommandHandlerResp();
+                return CustomResponse
+                    .notFound("Stock for the specified product not found")
+                    .toCommandHandlerResp();
 
             // ─────────────────────────────────────
             // 2. System checks available stock and reserves stock

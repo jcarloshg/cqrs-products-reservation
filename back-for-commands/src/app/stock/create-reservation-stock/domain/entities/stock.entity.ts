@@ -1,6 +1,5 @@
 import z from "zod";
 
-// import { StockReservedDomainEvent } from "../domain-events/StockReservedDomainEvent";
 import { StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 import { AggregateRoot } from "@/app/shared/domain/domain-events/aggregate-root";
 import {

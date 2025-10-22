@@ -20,7 +20,7 @@ export class CreateReservationStockUseCase {
             await this._commandBus.dispatch(createReservationStockCommand);
 
             const createReservationStockResponse: CreateReservationStockResponse = {
-                reservationStockCreated: {},
+                reservationStockCreated: {}
             };
             return CustomResponse.created(
                 createReservationStockResponse,
