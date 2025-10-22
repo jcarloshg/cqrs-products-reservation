@@ -95,7 +95,7 @@ export class CreateReservationStockApplication {
         );
 
         const createReservationStockRequest: CreateReservationStockRequest = {
-            data: requestProps.body,
+            data: requestProps.body ?? {},
         };
         const createReservationStockResponse = await createReservationStockUseCase
             .execute(createReservationStockRequest);

@@ -23,6 +23,8 @@ const CommanSchema = z.object({
     productId: z.uuid(),
     quantity: z.number().min(1),
     status: z.enum(["PENDING"]),
-    expiresAt: z.date(),
+    expiresAt: z.string().refine((date) => !isNaN(Date.parse(date)), {
+        message: "Date must be a valid ISO string",
+    }),
 });
 export type CreateReservationStockCommandProps = z.infer<typeof CommanSchema>;
