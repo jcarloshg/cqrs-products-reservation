@@ -74,9 +74,18 @@ export class Stock implements EntityDomain<StockProps> {
         // ─────────────────────────────────────
         // 2. Manage domain events
         // ─────────────────────────────────────
+        const propsCopy = this._entityProps.getCopy();
         const stockReservedDomainEvent = new StockIncreaseReservationQuantityDomainEvent(
-            this._entityProps.getCopy(),
-            reservationStock
+            {
+                uuid: propsCopy.uuid,
+                product_uuid: propsCopy.product_uuid,
+                available_quantity: propsCopy.available_quantity,
+                reserved_quantity: propsCopy.reserved_quantity,
+            },
+            {
+                reservationUuid: reservationStock.reservationUuid,
+                quantity: reservationStock.quantity,
+            }
         );
         this.getAggregateRoot().recordDomainEvent(stockReservedDomainEvent);
     }

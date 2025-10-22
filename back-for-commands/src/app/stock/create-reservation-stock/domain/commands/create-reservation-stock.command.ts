@@ -6,7 +6,10 @@ export class CreateReservationStockCommand implements Command {
     public readonly createReservationStockCommandProps: CreateReservationStockCommandProps;
 
     constructor(props: { [key: string]: any }) {
-        const parsed = CommanSchema.safeParse(props);
+        const parsed = CommanSchema.safeParse({
+            ...props,
+            expiresAt: props.expiresAt ? new Date(props.expiresAt) : undefined,
+        });
         if (parsed.success === false)
             throw new OwnZodError("CreateReservationStockCommand", parsed.error);
         this.createReservationStockCommandProps = parsed.data;
@@ -23,8 +26,6 @@ const CommanSchema = z.object({
     productId: z.uuid(),
     quantity: z.number().min(1),
     status: z.enum(["PENDING"]),
-    expiresAt: z.string().refine((date) => !isNaN(Date.parse(date)), {
-        message: "Date must be a valid ISO string",
-    }),
+    expiresAt: z.date(),
 });
 export type CreateReservationStockCommandProps = z.infer<typeof CommanSchema>;

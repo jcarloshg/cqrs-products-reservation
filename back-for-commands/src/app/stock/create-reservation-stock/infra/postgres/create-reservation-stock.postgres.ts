@@ -28,9 +28,8 @@ export class CreateReservationStockPostgres implements CreateReservationStockRep
                 })
                 : null;
         } catch (error) {
-            const errorMessage =
-                error instanceof Error ? error.message : String(error);
-            console.error("Error in CreateReservationStockPostgres:", errorMessage);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error("[ERROR] - CreateReservationStockPostgres:", errorMessage);
             return null;
         }
     }

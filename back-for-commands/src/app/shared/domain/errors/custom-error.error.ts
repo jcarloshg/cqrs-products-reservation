@@ -10,3 +10,8 @@ export class CustomError extends Error {
         return CustomResponse.badRequest(message);
     }
 }
+
+
+export interface ErrorLogger {
+    logError(): Promise<void>;
+}

@@ -62,11 +62,11 @@ export class CreateReservationStockApplication {
             notifyStockUpdatedEventHandler
         );
 
-        const notifyStoreEventHandler = new NotifyStoreEventHandler();
-        eventBusOwn.subscribe(
-            notifyStoreEventHandler.subscribeTo(),
-            notifyStoreEventHandler
-        );
+        // const notifyStoreEventHandler = new NotifyStoreEventHandler();
+        // eventBusOwn.subscribe(
+        //     notifyStoreEventHandler.subscribeTo(),
+        //     notifyStoreEventHandler
+        // );
 
         // ─────────────────────────────────────
         // command handlers

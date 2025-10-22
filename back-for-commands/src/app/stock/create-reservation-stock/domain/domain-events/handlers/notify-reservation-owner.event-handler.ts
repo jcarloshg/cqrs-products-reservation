@@ -46,7 +46,7 @@ export class NotifyReservationOwnerEventHandler implements EventHandler<CreateRe
             await this._sendEmailService.send(sendEmailServiceProps);
 
         } catch (error) {
-            console.error("Error sending notification:", error);
+            console.error("[NotifyReservationOwnerEventHandler] - Error sending notification:", error);
         }
     }
 }

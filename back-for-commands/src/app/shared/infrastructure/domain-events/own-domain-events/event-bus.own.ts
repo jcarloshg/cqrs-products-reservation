@@ -12,6 +12,7 @@ export class EventBusOwn implements EventBus {
             this.handlers.set(eventType, []);
         }
         this.handlers.get(eventType)!.push(handler);
+        console.log(`this.handlers.keys: `, this.handlers);
     }
 
     public async publish(event: DomainEvent): Promise<void> {

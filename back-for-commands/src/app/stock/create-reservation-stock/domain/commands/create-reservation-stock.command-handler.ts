@@ -79,9 +79,12 @@ export class CreateReservationStockCommandHandler implements CommandHandler<Crea
             const reservationStockDomainEvents = reservationStock
                 .getAggregateRoot()
                 .pullDomainEvents();
+            console.log(`reservationStockDomainEvents: `, reservationStockDomainEvents);
             await this._eventPublisher.publishAll(reservationStockDomainEvents);
 
-            const stockDomainEvents = stock.getAggregateRoot().pullDomainEvents();
+            const stockDomainEvents = stock
+                .getAggregateRoot()
+                .pullDomainEvents();
             await this._eventPublisher.publishAll(stockDomainEvents);
 
             // 6. return response
@@ -96,14 +99,16 @@ export class CreateReservationStockCommandHandler implements CommandHandler<Crea
             const commandHandlerResp = customResponse.toCommandHandlerResp();
             return commandHandlerResp;
         } catch (error) {
+
+            const message = error instanceof Error ? error.message : String(error);
+            console.error("CreateReservationStockCommandHandler - Error:", message);
+
             if (error instanceof DomainError)
                 return error.toCustomResponse().toCommandHandlerResp();
 
             if (error instanceof OwnZodError)
                 return error.toCustomResponse().toCommandHandlerResp();
 
-            const message = error instanceof Error ? error.message : String(error);
-            console.error("CreateReservationStockCommandHandler - Error:", message);
             return CustomResponse.internalServerError().toCommandHandlerResp();
         }
     }

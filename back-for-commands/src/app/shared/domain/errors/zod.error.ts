@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CustomResponse } from "../model/custom-response.model";
+import { ErrorLogger } from "./custom-error.error";
 
 export interface ModelsErrorRequest {
     entity: string;
@@ -7,7 +8,8 @@ export interface ModelsErrorRequest {
     developerError: string[];
 }
 
-export class OwnZodError extends Error {
+export class OwnZodError extends Error implements ErrorLogger {
+
     public readonly modelsErrorRequest: ModelsErrorRequest;
 
     constructor(entity: string, error: z.ZodError) {
@@ -23,6 +25,12 @@ export class OwnZodError extends Error {
             userError: userMessage,
             developerError: developerError,
         };
+
+        this.logError();
+    }
+
+    public async logError(): Promise<void> {
+        console.error(`OwnZodError - ${this.modelsErrorRequest.entity} - Error: ${JSON.stringify(this.modelsErrorRequest.developerError)}`);
     }
 
     public toCustomResponse(): CustomResponse {

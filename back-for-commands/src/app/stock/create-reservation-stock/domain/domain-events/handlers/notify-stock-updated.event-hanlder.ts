@@ -9,16 +9,16 @@ export class NotifyStockUpdatedEventHandler implements EventHandler<StockIncreas
         return StockIncreaseReservationQuantityDomainEvent.eventName;
     }
 
-    public async handle(
-        event: StockIncreaseReservationQuantityDomainEvent
-    ): Promise<void> {
+    public async handle(event: StockIncreaseReservationQuantityDomainEvent): Promise<void> {
         try {
+            console.log(`event-uuid: `, event.eventUuid);
             const { stock, reservationStock } = event;
+            console.log(`{ stock, reservationStock }: `, { stock, reservationStock });
             const title = "Stock Reservation Updated";
             const message = `Stock for product ID: ${stock.product_uuid} has been updated. New available quantity: ${stock.available_quantity}, New reserved quantity: ${stock.reserved_quantity}. Reservation ID: ${reservationStock.reservationUuid}, Reserved quantity: ${reservationStock.quantity}.`;
-            console.log("Notification Sent:", { title, message });
+            console.log("NotifyStockUpdatedEventHandler - Notification Sent:", { title, message });
         } catch (error) {
-            console.error("Error sending notification:", error);
+            console.error("[Error] - NotifyStockUpdatedEventHandler - sending notification:", error);
         }
     }
 }

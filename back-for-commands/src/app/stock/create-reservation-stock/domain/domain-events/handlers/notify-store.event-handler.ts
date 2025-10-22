@@ -16,7 +16,7 @@ export class NotifyStoreEventHandler implements EventHandler<CreateReservationSt
             const message = `A new stock reservation has been made for product ID: ${props.productId}. Reserved quantity: ${props.quantity}.`;
             console.log("Notification Sent:", { title, message });
         } catch (error) {
-            console.error("Error sending notification:", error);
+            console.error("[NotifyStoreEventHandler] - Error sending notification:", error);
         }
     }
 }

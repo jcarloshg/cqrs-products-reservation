@@ -1,8 +1,8 @@
 import { CreateRepository } from "@/app/shared/domain/repository/crud/create.repository";
-import { ReservationStock } from "../entities/reservation-stock.entity";
+import { ReservationStock } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
 
-export class CreateReservationStockRepository
-    implements CreateRepository<ReservationStock> {
+
+export class CreateReservationStockRepository implements CreateRepository<ReservationStock> {
 
     constructor() { }
 
