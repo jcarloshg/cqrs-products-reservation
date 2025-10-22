@@ -2,80 +2,69 @@ import { CreateReservationStockCommand } from "@/app/stock/create-reservation-st
 import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 
 describe("CreateReservationStockCommand", () => {
-    it("should create a command with valid props", () => {
-        // Arrange
-        const validProps = {
-            uuid: "a8098c1a-f86e-11da-bd1a-00112444be1e",
-            ownerUuid: "b8098c1a-f86e-11da-bd1a-00112444be1e",
-            productId: "c8098c1a-f86e-11da-bd1a-00112444be1e",
-            quantity: 5,
-            status: "PENDING",
-            expiresAt: new Date(),
-        };
-        // Act
-        const command = new CreateReservationStockCommand(validProps);
-        // Assert
+    const validProps = {
+        uuid: "123e4567-e89b-12d3-a456-426614174000",
+        ownerUuid: "123e4567-e89b-12d3-a456-426614174001",
+        productId: "123e4567-e89b-12d3-a456-426614174002",
+        quantity: 5,
+        status: "PENDING",
+        expiresAt: new Date().toISOString(),
+    };
+
+    it("should create command with valid props", () => {
+        // Arrange: set up valid props
+        const props = { ...validProps };
+        // Act: execute the constructor
+        const command = new CreateReservationStockCommand(props);
+        // Assert: verify the expected outcome
         expect(command.createReservationStockCommandProps).toMatchObject({
-            ...validProps,
+            ...props,
             expiresAt: expect.any(Date),
         });
     });
 
-    it("should throw OwnZodError for invalid uuid", () => {
-        // Arrange
-        const invalidProps = {
-            uuid: "not-a-uuid",
-            ownerUuid: "b8098c1a-f86e-11da-bd1a-00112444be1e",
-            productId: "c8098c1a-f86e-11da-bd1a-00112444be1e",
-            quantity: 5,
-            status: "PENDING",
-            expiresAt: new Date(),
-        };
-        // Act & Assert
-        expect(() => new CreateReservationStockCommand(invalidProps)).toThrow(OwnZodError);
-    });
-
-    it("should throw OwnZodError for quantity less than 1", () => {
-        // Arrange
-        const invalidProps = {
-            uuid: "a8098c1a-f86e-11da-bd1a-00112444be1e",
-            ownerUuid: "b8098c1a-f86e-11da-bd1a-00112444be1e",
-            productId: "c8098c1a-f86e-11da-bd1a-00112444be1e",
-            quantity: 0,
-            status: "PENDING",
-            expiresAt: new Date(),
-        };
-        // Act & Assert
-        expect(() => new CreateReservationStockCommand(invalidProps)).toThrow(OwnZodError);
-    });
-
     it("should throw OwnZodError for missing required fields", () => {
-        // Arrange
-        const emptyProps = {};
-        // Act & Assert
-        expect(() => new CreateReservationStockCommand(emptyProps)).toThrow(OwnZodError);
+        // Arrange: set up empty props
+        const props = {};
+        // Act & Assert: execute and verify error is thrown
+        expect(() => new CreateReservationStockCommand(props)).toThrow(OwnZodError);
     });
 
-    it("should parse expiresAt from string", () => {
-        // Arrange
-        const validProps = {
-            uuid: "a8098c1a-f86e-11da-bd1a-00112444be1e",
-            ownerUuid: "b8098c1a-f86e-11da-bd1a-00112444be1e",
-            productId: "c8098c1a-f86e-11da-bd1a-00112444be1e",
-            quantity: 5,
-            status: "PENDING",
-            expiresAt: new Date().toISOString(),
-        };
-        // Act
-        const command = new CreateReservationStockCommand(validProps);
-        // Assert
+    it("should throw OwnZodError for invalid quantity", () => {
+        // Arrange: set up props with invalid quantity
+        const invalidProps = { ...validProps, quantity: 0 };
+        // Act & Assert: execute and verify error is thrown
+        expect(() => new CreateReservationStockCommand(invalidProps)).toThrow(OwnZodError);
+    });
+
+    it("should throw OwnZodError for invalid status", () => {
+        // Arrange: set up props with invalid status
+        const invalidProps = { ...validProps, status: "CONFIRMED" };
+        // Act & Assert: execute and verify error is thrown
+        expect(() => new CreateReservationStockCommand(invalidProps)).toThrow(OwnZodError);
+    });
+
+    it("should throw OwnZodError for invalid uuid format", () => {
+        // Arrange: set up props with invalid uuid
+        const invalidProps = { ...validProps, uuid: "not-a-uuid" };
+        // Act & Assert: execute and verify error is thrown
+        expect(() => new CreateReservationStockCommand(invalidProps)).toThrow(OwnZodError);
+    });
+
+    it("should set expiresAt as Date if passed as string", () => {
+        // Arrange: set up props with expiresAt as string
+        const propsWithStringDate = { ...validProps, expiresAt: new Date().toISOString() };
+        // Act: execute the constructor
+        const command = new CreateReservationStockCommand(propsWithStringDate);
+        // Assert: verify expiresAt is a Date instance
         expect(command.createReservationStockCommandProps.expiresAt).toBeInstanceOf(Date);
     });
 
-    it("should have static COMMAND_NAME property", () => {
-        // Arrange
-        // Act
-        // Assert
-        expect(CreateReservationStockCommand.COMMAND_NAME).toBe("CreateReservationStockCommand");
+    it("should return correct COMMAND_NAME", () => {
+        // Arrange: nothing to arrange for static property
+        // Act: access static property
+        const name = CreateReservationStockCommand.COMMAND_NAME;
+        // Assert: verify the command name
+        expect(name).toBe("CreateReservationStockCommand");
     });
 });
