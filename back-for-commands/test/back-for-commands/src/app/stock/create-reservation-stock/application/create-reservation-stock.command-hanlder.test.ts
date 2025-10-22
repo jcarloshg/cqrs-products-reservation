@@ -2,7 +2,6 @@
 // import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-bus.own";
 // import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
 // import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/domain/commands/create-reservation-stock.command";
-// import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/create-reservation-stock.command-hanlder";
 // import { NotifyReservationOwnerEventHandler } from "@/app/stock/create-reservation-stock/domain/domain-events/handlers/notify-reservation-owner.event-handler";
 // import { NotifyStockUpdatedEventHandler } from "@/app/stock/create-reservation-stock/domain/domain-events/handlers/notify-stock-updated.event-hanlder";
 // import { NotifyStoreEventHandler } from "@/app/stock/create-reservation-stock/domain/domain-events/handlers/notify-store.event-handler";
@@ -18,6 +17,7 @@
 //     UserFromDB,
 // } from "@/app/shared/infrastructure/repository/postgres/models.sequelize";
 // import { UpdateReservedStockPostgres } from "@/app/stock/create-reservation-stock/infra/postgres/update-reserved-stock.postgres";
+// import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/domain/commands/create-reservation-stock.command-handler";
 
 // describe("create-reservation-stock.command-hanlder.test", () => {
 //     let createReservationStockCommandHandler: CreateReservationStockCommandHandler;
@@ -69,9 +69,11 @@
 //         // ─────────────────────────────────────
 //         const eventBusOwn = new EventBusOwn();
 //         const eventPublisherOwn = new EventPublisherOwn(eventBusOwn);
+
+//         const new NotifyReservationOwnerEventHandler()
 //         eventBusOwn.subscribe(
 //             CreateReservationStockDomainEvent.eventName,
-//             new NotifyReservationOwnerEventHandler()
+            
 //         );
 //         eventBusOwn.subscribe(
 //             StockIncreaseReservationQuantityDomainEvent.eventName,
