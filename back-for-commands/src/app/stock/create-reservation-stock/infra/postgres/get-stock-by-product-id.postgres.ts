@@ -1,11 +1,8 @@
-import { StockForDB } from "../../../../shared/infrastructure/repository/postgres/models.sequelize";
-
-import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
+import { StockForDB } from "@/app/shared/infrastructure/repository/postgres/models.sequelize";
+import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/services/repository/get-stock-by-product-id.repository";
 import { Stock } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
 
-
-export class GetStockByProductIdPostgres
-    implements GetStockByProductIdRepository {
+export class GetStockByProductIdPostgres implements GetStockByProductIdRepository {
     constructor() { }
 
     public async findById(id: string): Promise<Stock | null> {

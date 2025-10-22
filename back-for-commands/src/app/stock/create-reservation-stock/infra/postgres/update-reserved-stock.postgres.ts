@@ -1,9 +1,6 @@
-import { StockForDB } from "../../../../shared/infrastructure/repository/postgres/models.sequelize";
-import {
-    UpdateReservedStockRepository,
-    UpdateStockProps,
-} from "@/app/stock/create-reservation-stock/domain/repository/update-reserved-stock.repository";
+import { StockForDB } from "@/app/shared/infrastructure/repository/postgres/models.sequelize";
 import { StockProps } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
+import { UpdateReservedStockRepository, UpdateStockProps } from "@/app/stock/create-reservation-stock/domain/services/repository/update-reserved-stock.repository";
 
 export class UpdateReservedStockPostgres extends UpdateReservedStockRepository {
     constructor() {

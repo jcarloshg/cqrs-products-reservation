@@ -8,7 +8,6 @@ export class EventBusOwn implements EventBus {
     constructor() { }
 
     public subscribe<T extends DomainEvent>(eventType: string, handler: EventHandler<T>): void {
-        console.log(`eventType: `, eventType);
         if (!this.handlers.has(eventType)) {
             this.handlers.set(eventType, []);
         }
@@ -16,7 +15,7 @@ export class EventBusOwn implements EventBus {
     }
 
     public async publish(event: DomainEvent): Promise<void> {
-        const handlers = this.handlers.get(event.eventName);
+        const handlers = this.handlers.get(event.getEventName);
         if (handlers) {
             for (const handler of handlers) {
                 await handler.handle(event);

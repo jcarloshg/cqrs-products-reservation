@@ -1,36 +1,36 @@
-import {
-    CommandHandler,
-    CommandHandlerResp,
-} from "@/app/shared/domain/domain-events/command-handler";
-import { EventPublisher } from "@/app/shared/domain/domain-events/event-publisher";
-import { DomainError } from "@/app/shared/domain/errors/domain.error";
-import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
+// shared - domain
+import { CommandHandler, CommandHandlerResp } from "@/app/shared/domain/domain-events/command-handler";
 import { CustomResponse } from "@/app/shared/domain/model/custom-response.model";
-import {
-    Stock,
-    StockReservationInfo,
-} from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
-import {
-    ReservationStock,
-    ReservationStockProps,
-} from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/repository/get-stock-by-product-id.repository";
-import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
-import { UpdateReservedStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/update-reserved-stock.repository";
-import { CreateReservationStockCommand } from "./create-reservation-stock.command";
+import { DomainError } from "@/app/shared/domain/errors/domain.error";
+import { EventPublisher } from "@/app/shared/domain/domain-events/event-publisher";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
+// domain - commands
+import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/domain/commands/create-reservation-stock.command";
+// domain - repository
+import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/services/repository/create-reservation-stock.repository";
+import { GetStockByProductIdRepository } from "@/app/stock/create-reservation-stock/domain/services/repository/get-stock-by-product-id.repository";
+import { UpdateReservedStockRepository } from "@/app/stock/create-reservation-stock/domain/services/repository/update-reserved-stock.repository";
+// domain - entities
+import { ReservationStock, ReservationStockProps } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { Stock, StockReservationInfo } from "@/app/stock/create-reservation-stock/domain/entities/stock.entity";
+
 
 export interface CreateReservationStockResponse {
     reservationStock: ReservationStockProps;
 }
 
-export class CreateReservationStockCommandHandler
-    implements CommandHandler<CreateReservationStockCommand> {
+export class CreateReservationStockCommandHandler implements CommandHandler<CreateReservationStockCommand> {
+
     constructor(
         private readonly _CreateReservationStockRepository: CreateReservationStockRepository,
         private readonly _GetStockByProductIdRepository: GetStockByProductIdRepository,
         private readonly _UpdateReservedStockRepository: UpdateReservedStockRepository,
         private readonly _eventPublisher: EventPublisher
     ) { }
+
+    public subscribeTo(): string {
+        return CreateReservationStockCommand.COMMAND_NAME;
+    }
 
     public async handler(
         command: CreateReservationStockCommand

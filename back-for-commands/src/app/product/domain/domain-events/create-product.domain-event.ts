@@ -8,7 +8,7 @@ export interface CreateProductDomainEventProps {
 }
 
 export class CreateProductDomainEvent extends DomainEvent {
-    public readonly eventName = "product.created";
+    private _eventName = "product.created";
     public readonly uuid: string;
     public readonly name: string;
     public readonly description: string;
@@ -16,6 +16,7 @@ export class CreateProductDomainEvent extends DomainEvent {
 
     constructor(props: CreateProductDomainEventProps) {
         super(props.uuid);
+        // this.eventName = "product.created";
         this.uuid = props.uuid;
         this.name = props.name;
         this.description = props.description;

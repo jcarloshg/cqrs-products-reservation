@@ -3,9 +3,9 @@ import { EventBusOwn } from "@/app/shared/infrastructure/domain-events/own-domai
 import { EventPublisherOwn } from "@/app/shared/infrastructure/domain-events/own-domain-events/event-publisher.own";
 import { CreateReservationStockCommand } from "@/app/stock/create-reservation-stock/domain/commands/create-reservation-stock.command";
 import { CreateReservationStockCommandHandler } from "@/app/stock/create-reservation-stock/application/create-reservation-stock.command-hanlder";
-import { NotifyReservationOwnerEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-reservation-owner.event-handler";
-import { NotifyStockUpdatedEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-stock-updated.event-hanlder";
-import { NotifyStoreEventHandler } from "@/app/stock/create-reservation-stock/application/events/notify-store.event-handler";
+import { NotifyReservationOwnerEventHandler } from "@/app/stock/create-reservation-stock/domain/domain-events/handlers/notify-reservation-owner.event-handler";
+import { NotifyStockUpdatedEventHandler } from "@/app/stock/create-reservation-stock/domain/domain-events/handlers/notify-stock-updated.event-hanlder";
+import { NotifyStoreEventHandler } from "@/app/stock/create-reservation-stock/domain/domain-events/handlers/notify-store.event-handler";
 import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 import { StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";

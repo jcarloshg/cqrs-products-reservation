@@ -1,9 +1,8 @@
 import { ReservationStock } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
-import { CreateReservationStockRepository } from "../../domain/repository/create-reservation-stock.repository";
-import { ReservationForDB } from "../../../../shared/infrastructure/repository/postgres/models.sequelize";
+import { ReservationForDB } from "@/app/shared/infrastructure/repository/postgres/models.sequelize";
+import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/services/repository/create-reservation-stock.repository";
 
-export class CreateReservationStockPostgres
-    implements CreateReservationStockRepository {
+export class CreateReservationStockPostgres implements CreateReservationStockRepository {
     constructor() { }
 
     public async run(entity: ReservationStock): Promise<ReservationStock | null> {

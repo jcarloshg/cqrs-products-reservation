@@ -1,5 +1,5 @@
-export abstract class DomainEvent {
-    public abstract readonly eventName: string;
+export class DomainEvent {
+    public static readonly eventName: string = "DOMAIN.EVENT";
     public readonly eventUuid = crypto.randomUUID();
     public readonly occurredOn: Date;
     public readonly aggregateId?: string;
@@ -9,7 +9,7 @@ export abstract class DomainEvent {
         this.aggregateId = aggregateId;
     }
 
-    public static get eventName(): string {
-        return this.prototype.eventName;
+    public get getEventName(): string {
+        return DomainEvent.eventName;
     }
 }

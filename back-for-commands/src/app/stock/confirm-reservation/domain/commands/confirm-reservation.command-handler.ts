@@ -27,6 +27,10 @@ export class ConfirmReservationCommandHandler implements CommandHandler<ConfirmR
         this._eventPublisher = eventPublisher;
     }
 
+    public subscribeTo(): string {
+        return ConfirmReservationCommand.COMMAND_NAME;
+    }
+
     public async handler(
         command: ConfirmReservationCommand
     ): Promise<CommandHandlerResp> {

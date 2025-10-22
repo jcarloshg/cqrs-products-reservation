@@ -1,9 +1,13 @@
 import { EventHandler } from "@/app/shared/domain/domain-events/event-handler";
 import { StockIncreaseReservationQuantityDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/stock-increase-reservation-quantity.domain-event";
 
-export class NotifyStockUpdatedEventHandler
-    implements EventHandler<StockIncreaseReservationQuantityDomainEvent> {
+export class NotifyStockUpdatedEventHandler implements EventHandler<StockIncreaseReservationQuantityDomainEvent> {
+
     constructor() { }
+
+    public subscribeTo(): string {
+        return StockIncreaseReservationQuantityDomainEvent.eventName;
+    }
 
     public async handle(
         event: StockIncreaseReservationQuantityDomainEvent
