@@ -2,7 +2,7 @@ import { NotifyReservationOwnerEventHandler } from "@/app/stock/create-reservati
 import { EventError } from "@/app/shared/domain/errors/event.error";
 import { CreateReservationStockDomainEvent } from "@/app/stock/create-reservation-stock/domain/domain-events/create-reservation-stock.doamin-event";
 
-describe("NotifyReservationOwnerEventHandler", () => {
+describe("notify-reservation-owner.event-handler.test", () => {
     let sendEmailService: { send: jest.Mock };
     let getUserByUuidRepository: { findById: jest.Mock };
     let handler: NotifyReservationOwnerEventHandler;
