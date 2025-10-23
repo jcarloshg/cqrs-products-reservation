@@ -14,9 +14,7 @@ export class ReplenishStockUseCase {
             // 4. System publishes domain events for read model updates
             // 5. System returns success confirmation
 
-        } catch (error) {
-
-        }
+        } catch (error) { }
 
     }
 }
