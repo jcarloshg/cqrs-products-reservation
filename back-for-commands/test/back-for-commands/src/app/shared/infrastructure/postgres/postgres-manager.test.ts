@@ -1,11 +1,11 @@
-import { PostgresManager } from "@/app/shared/infrastructure/postgres/postgres-manager"
+import { PostgresManager } from "@/app/shared/infrastructure/repository/postgres/postgres-manager";
 
-describe('postgres-manager.test', () => {
-    it('should connect to the database', async () => {
-        const a = PostgresManager.getInstance()
-        await a.connect()
-        expect(a.isConnectionActive()).toBe(true)
-        await a.disconnect()
-        expect(a.isConnectionActive()).toBe(false)
-    })
-})
+describe("postgres-manager.test", () => {
+    it("should connect to the database", async () => {
+        const postgressConnectionInstance = PostgresManager.getInstance();
+        await postgressConnectionInstance.connect();
+        expect(postgressConnectionInstance.isConnectionActive()).toBe(true);
+        await postgressConnectionInstance.disconnect();
+        expect(postgressConnectionInstance.isConnectionActive()).toBe(false);
+    });
+});

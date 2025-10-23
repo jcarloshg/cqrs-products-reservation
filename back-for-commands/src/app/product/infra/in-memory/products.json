@@ -82,5 +82,23 @@
     "name": "Product Name",
     "description": "Product Description",
     "sku": "Product SKU"
+  },
+  {
+    "uuid": "284d620a-ba87-471a-87ba-7de1a3ef25a5",
+    "name": "Product Name",
+    "description": "Product Description",
+    "sku": "Product SKU"
+  },
+  {
+    "uuid": "eb262b7a-8067-4515-9e96-4c10b6c90bd1",
+    "name": "Product Name",
+    "description": "Product Description",
+    "sku": "Product SKU"
+  },
+  {
+    "uuid": "94206db6-b0e5-46ae-b261-e6ab9deae4d3",
+    "name": "Product Name",
+    "description": "Product Description",
+    "sku": "Product SKU"
   }
 ]
