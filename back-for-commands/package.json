@@ -9,10 +9,9 @@
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "dev:docker": "ts-node -r tsconfig-paths/register src/index.ts",
     "clean": "rm -rf dist",
-    "unit-test": "jest",
-    "integration-test": "jest",
-    "acceptance-test": "jest ",
-    "jest": "jest --watch"
+    "test-unit": "jest --watch --testMatch '**/*.unit.test.ts'",
+    "test-integration": "jest --watch --testMatch '**/*.integration.test.ts'",
+    "test-acceptance": "jest --watch --testMatch '**/*.acceptance.test.ts'"
   },
   "keywords": [
     "express",
