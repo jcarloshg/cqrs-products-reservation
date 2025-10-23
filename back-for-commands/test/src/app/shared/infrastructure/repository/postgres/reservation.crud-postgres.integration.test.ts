@@ -13,10 +13,10 @@ import { ReservationStock } from "@/app/stock/create-reservation-stock/domain/en
 
 describe("reservation.crud-postgres.integration.test.ts", () => {
 
-    let userUuid = "54bccc6c-b0e2-4e7d-a2e9-000000000001";
-    let productUuid = "54bccc6c-b1e2-4e7d-a2e9-111111111111";
-    let stockUuid = "54bccc6c-b0e2-4e7d-a2e9-222222222222";
-    let reservationUuid = "54bccc6c-b0e2-4e7d-a2e9-333333333333";
+    let userUuid = crypto.randomUUID();
+    let productUuid = crypto.randomUUID();
+    let stockUuid = crypto.randomUUID();
+    let reservationUuid = crypto.randomUUID();
 
     let userForTest: UserAttributes | null = null;
     let productForTest: ProductAttributes | null = null;
@@ -65,14 +65,15 @@ describe("reservation.crud-postgres.integration.test.ts", () => {
 
     afterEach(async () => {
 
-        // Delete all reservations referencing the product before deleting product
-        if (productForTest) {
-            await ReservationForDB.destroy({ where: { product_id: productForTest.uuid } });
-        }
 
         // Delete stock before product to avoid FK violation
         if (stockForTest)
             await StockForDB.destroy({ where: { product_uuid: productForTest?.uuid } });
+
+        // Delete all reservations referencing the product before deleting product
+        if (productForTest) {
+            await ReservationForDB.destroy({ where: { product_id: productForTest.uuid } });
+        }
 
         // Delete product after stock and reservations
         if (productForTest)

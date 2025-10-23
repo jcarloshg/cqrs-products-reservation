@@ -20,6 +20,7 @@ export class PostgresManager {
                 host: POSTGRES_ENV.POSTGRES_HOST,
                 port: parseInt(POSTGRES_ENV.POSTGRES_PORT),
                 dialect: "postgres",
+                logging: false, // Disable all Sequelize print logs
             }
         );
     }
