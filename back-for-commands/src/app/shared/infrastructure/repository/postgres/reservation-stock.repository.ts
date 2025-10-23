@@ -1,8 +1,7 @@
 import { CrudRepository } from "@/app/shared/domain/repository/crud.repository";
 import { ReservationAttributes, ReservationForDB } from "./models.sequelize";
 
-export class ReservationStockRepository
-    implements CrudRepository<ReservationAttributes> {
+export class ReservationStockRepository implements CrudRepository<ReservationAttributes> {
     constructor() { }
 
     async create(data: ReservationAttributes): Promise<ReservationAttributes> {
