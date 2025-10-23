@@ -8,11 +8,16 @@ export class ReplenishStockUseCase {
 
         try {
 
-            // 1. System validates reservation exists and is not expired
-            // 2. System marks reservation as confirmed
-            // 3. System associates reservation with order ID
-            // 4. System publishes domain events for read model updates
-            // 5. System returns success confirmation
+            // Preconditions:
+            // Product exists in the system
+            // Stock record exists for the product
+
+            // 1. System validates product exists
+            // 2. System validates quantity is positive
+            // 3. System updates stock quantities (total and available)
+            // 4. System publishes StockReplenishedEvent
+            // 5. System updates read models
+            // 6. System returns success confirmation
 
         } catch (error) { }
 

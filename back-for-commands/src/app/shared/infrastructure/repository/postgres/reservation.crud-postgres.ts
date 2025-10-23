@@ -3,7 +3,10 @@ import { ReservationForDB } from "./models.sequelize";
 
 export class ReservationCrudPostgres implements ReservationCrudRepo {
     constructor() { }
-    async create(item: ReservationDataFromDB): Promise<ReservationDataFromDB | null> {
+
+    async create(
+        item: ReservationDataFromDB
+    ): Promise<ReservationDataFromDB | null> {
         try {
             const created = await ReservationForDB.create(item);
             return created?.dataValues as ReservationDataFromDB;
@@ -14,7 +17,7 @@ export class ReservationCrudPostgres implements ReservationCrudRepo {
     async findAll(): Promise<ReservationDataFromDB[]> {
         try {
             const results = await ReservationForDB.findAll();
-            return results.map(r => r.dataValues as ReservationDataFromDB);
+            return results.map((r) => r.dataValues as ReservationDataFromDB);
         } catch (error) {
             return [];
         }
@@ -27,12 +30,15 @@ export class ReservationCrudPostgres implements ReservationCrudRepo {
             return null;
         }
     }
-    async update(id: string, item: Partial<ReservationDataFromDB>): Promise<ReservationDataFromDB | null> {
+    async update(
+        id: string,
+        item: Partial<ReservationDataFromDB>
+    ): Promise<ReservationDataFromDB | null> {
         try {
             const found = await ReservationForDB.findByPk(id);
             if (!found) return null;
-            await found.update(item);
-            return found.dataValues as ReservationDataFromDB;
+            const updated = await found.update(item);
+            return updated.dataValues as ReservationDataFromDB;
         } catch (error) {
             return null;
         }
