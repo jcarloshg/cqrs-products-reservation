@@ -102,6 +102,24 @@ describe("stock.crud-postgres.integration.test.ts", () => {
             // Assert
             expect(result).toBeNull();
         });
+        });
+
+        describe("findByFields", () => {
+            it("should return stock item by fields", async () => {
+                // Arrange
+                const itemToFind = (await repo.create(stockForTest))!;
+                // Act
+                const result = await repo.findByFields({ product_uuid: itemToFind.product_uuid });
+                // Assert
+                expect(result).not.toBeNull();
+                expect(result?.product_uuid).toBe(itemToFind.product_uuid);
+            });
+            it("should return null if not found by fields", async () => {
+                // Arrange && Act
+                const result = await repo.findByFields({ product_uuid: "non-existent-product-uuid" });
+                // Assert
+                expect(result).toBeNull();
+            });
     });
 
     describe("update", () => {

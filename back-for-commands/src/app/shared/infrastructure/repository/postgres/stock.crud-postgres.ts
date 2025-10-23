@@ -5,6 +5,10 @@ export class StockCrudPostgres implements StockCrudRepo {
 
     constructor() { }
 
+    // ─────────────────────────────────────
+    // CREATE
+    // ─────────────────────────────────────
+
     async create(item: StockDataFromDB): Promise<StockDataFromDB | null> {
         try {
             const created = await StockForDB.create(item);
@@ -13,6 +17,10 @@ export class StockCrudPostgres implements StockCrudRepo {
             return null;
         }
     }
+
+    // ─────────────────────────────────────
+    // READ
+    // ─────────────────────────────────────
 
     async findAll(): Promise<StockDataFromDB[]> {
         try {
@@ -32,6 +40,19 @@ export class StockCrudPostgres implements StockCrudRepo {
         }
     }
 
+    async findByFields(fields: Record<string, string>): Promise<StockDataFromDB | null> {
+        try {
+            const found = await StockForDB.findOne({ where: fields });
+            return found ? (found.dataValues as StockDataFromDB) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    // ─────────────────────────────────────
+    // UPDATE
+    // ─────────────────────────────────────
+
     async update(id: string, item: Partial<StockDataFromDB>): Promise<StockDataFromDB | null> {
         try {
             const found = await StockForDB.findByPk(id);
@@ -42,6 +63,10 @@ export class StockCrudPostgres implements StockCrudRepo {
             return null;
         }
     }
+
+    // ─────────────────────────────────────
+    // DELETE
+    // ─────────────────────────────────────
 
     async softDelete(id: string): Promise<boolean> {
         throw new Error("softDelete - Method not implemented yet.");
