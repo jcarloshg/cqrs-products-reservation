@@ -45,8 +45,7 @@ export class UpdateReservedStockPostgres extends UpdateReservedStockRepository {
                 reserved_quantity: updatedStock.dataValues.reserved_quantity,
             };
         } catch (error) {
-            const errorMessage =
-                error instanceof Error ? error.message : String(error);
+            const errorMessage = error instanceof Error ? error.message : String(error);
             console.error("Error in UpdateReservedStockPostgres:", errorMessage);
             return null;
         }
