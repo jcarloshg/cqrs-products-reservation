@@ -1,10 +1,14 @@
+import { z } from "zod";
+
 import { DomainEvent } from "@/app/shared/domain/domain-events/domain-event";
 import { StockProps } from "../entities/stock.entity";
 
-export type StockReservationInfo = {
-    reservationUuid: string;
-    quantity: number;
-};
+const StockReservationInfoSchema = z.object({
+    reservationUuid: z.uuid(),
+    quantity: z.number().min(1),
+});
+
+export type StockReservationInfo = z.infer<typeof StockReservationInfoSchema>;
 
 export class StockIncreaseReservationQuantityDomainEvent extends DomainEvent {
 
@@ -16,6 +20,6 @@ export class StockIncreaseReservationQuantityDomainEvent extends DomainEvent {
     constructor(data: StockProps, reservationStock: StockReservationInfo) {
         super();
         this.stock = data;
-        this.reservationStock = reservationStock;
+        this.reservationStock = StockReservationInfoSchema.parse(reservationStock);
     }
 }

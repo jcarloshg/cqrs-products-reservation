@@ -14,14 +14,6 @@ export class CreateReservationStockUseCase {
             const createReservationStockCommand = new CreateReservationStockCommand(request.data);
             const result = await this._commandBus.dispatch(createReservationStockCommand);
             return new CustomResponse(result.code, result.message, result.data);
-
-            // const createReservationStockResponse: CreateReservationStockResponse = {
-            //     reservationStockCreated: {}
-            // };
-            // return CustomResponse.created(
-            //     createReservationStockResponse,
-            //     "Reservation stock created successfully."
-            // );
         } catch (error) {
             return CustomResponse.internalServerError();
         }
@@ -31,7 +23,3 @@ export class CreateReservationStockUseCase {
 export interface CreateReservationStockRequest {
     data: { [key: string]: any };
 }
-
-// export interface CreateReservationStockResponse {
-//     reservationStockCreated: { [key: string]: any } | undefined;
-// }

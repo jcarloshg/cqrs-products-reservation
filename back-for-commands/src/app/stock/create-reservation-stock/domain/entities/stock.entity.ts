@@ -8,6 +8,7 @@ import {
     EntityPropsRawData,
 } from "@/app/shared/domain/model/entity";
 import { DomainError } from "@/app/shared/domain/errors/domain.error";
+import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 
 const StockPropsSchema = z.object({
     uuid: z.uuid(),
@@ -21,7 +22,10 @@ export class Stock implements EntityDomain<StockProps> {
     private readonly _entityProps: EntityProps<StockProps>;
 
     constructor(props: EntityPropsRawData) {
-        this._entityProps = new EntityProps<StockProps>(props, this._validData);
+        this._entityProps = new EntityProps<StockProps>(
+            props,
+            Stock.parse
+        );
     }
 
     getProps(): Readonly<StockProps> {
@@ -32,9 +36,10 @@ export class Stock implements EntityDomain<StockProps> {
         return this._entityProps.getAggregateRoot();
     }
 
-    private _validData(props: EntityPropsRawData): StockProps {
+    public static parse(props: EntityPropsRawData): StockProps {
         const parsed = StockPropsSchema.safeParse(props);
-        if (parsed.success === false) throw new Error("Invalid stock data");
+        if (parsed.success === false)
+            throw new OwnZodError("Invalid stock data", parsed.error);
         return parsed.data;
     }
 

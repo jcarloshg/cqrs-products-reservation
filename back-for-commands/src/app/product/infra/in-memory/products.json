@@ -76,5 +76,11 @@
     "name": "Product Name",
     "description": "Product Description",
     "sku": "Product SKU"
+  },
+  {
+    "uuid": "8736f41b-2b6e-4b5a-aafb-eb0f27b2fff7",
+    "name": "Product Name",
+    "description": "Product Description",
+    "sku": "Product SKU"
   }
 ]
