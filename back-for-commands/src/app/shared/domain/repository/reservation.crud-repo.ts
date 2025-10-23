@@ -24,6 +24,10 @@ export class ReservationCrudRepo implements CrudRepository<ReservationDataFromDB
         throw new Error("findById - Method not implemented.");
     }
 
+    async findByFields(fields: Partial<ReservationDataFromDB>): Promise<ReservationDataFromDB | null> {
+        throw new Error("Method not implemented.");
+    }
+
     async update(id: string, item: Partial<ReservationDataFromDB>): Promise<ReservationDataFromDB | null> {
         throw new Error("update - Method not implemented.");
     }

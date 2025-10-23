@@ -14,6 +14,7 @@ export class EventPublisherOwn implements EventPublisher {
     }
 
     public async publishAll(events: DomainEvent[]): Promise<void> {
+        console.log(`events: `, events);
         for (const event of events) {
             await this._eventBus.publish(event);
         }

@@ -1,18 +1,17 @@
-import { StockCrudRepo, StockDataFromDB } from "@/app/shared/domain/repository/stock.crud-repo";
-import { StockForDB } from "./models.sequelize";
 
-export class StockCrudPostgres implements StockCrudRepo {
+import { UserCrudRepo, UserDataFromDB } from "@/app/shared/domain/repository/user.crud-repo";
+import { UserFromDB } from "./models.sequelize";
 
+export class UserCrudPostgres implements UserCrudRepo {
     constructor() { }
 
     // ─────────────────────────────────────
     // CREATE
     // ─────────────────────────────────────
-
-    async create(item: StockDataFromDB): Promise<StockDataFromDB | null> {
+    async create(item: UserDataFromDB): Promise<UserDataFromDB | null> {
         try {
-            const created = await StockForDB.create(item);
-            return created?.dataValues as StockDataFromDB;
+            const created = await UserFromDB.create(item);
+            return created?.dataValues as UserDataFromDB;
         } catch (error) {
             return null;
         }
@@ -21,29 +20,28 @@ export class StockCrudPostgres implements StockCrudRepo {
     // ─────────────────────────────────────
     // READ
     // ─────────────────────────────────────
-
-    async findAll(): Promise<StockDataFromDB[]> {
+    async findAll(): Promise<UserDataFromDB[]> {
         try {
-            const results = await StockForDB.findAll();
-            return results.map((r: any) => r.dataValues as StockDataFromDB);
+            const results = await UserFromDB.findAll();
+            return results.map((r: any) => r.dataValues as UserDataFromDB);
         } catch (error) {
             return [];
         }
     }
 
-    async findById(id: string): Promise<StockDataFromDB | null> {
+    async findById(id: string): Promise<UserDataFromDB | null> {
         try {
-            const found = await StockForDB.findByPk(id);
-            return found ? (found.dataValues as StockDataFromDB) : null;
+            const found = await UserFromDB.findByPk(id);
+            return found ? (found.dataValues as UserDataFromDB) : null;
         } catch (error) {
             return null;
         }
     }
 
-    async findByFields(fields: Partial<StockDataFromDB>): Promise<StockDataFromDB | null> {
+    async findByFields(fields: Partial<UserDataFromDB>): Promise<UserDataFromDB | null> {
         try {
-            const found = await StockForDB.findOne({ where: fields });
-            return found ? (found.dataValues as StockDataFromDB) : null;
+            const found = await UserFromDB.findOne({ where: fields });
+            return found ? (found.dataValues as UserDataFromDB) : null;
         } catch (error) {
             return null;
         }
@@ -52,13 +50,12 @@ export class StockCrudPostgres implements StockCrudRepo {
     // ─────────────────────────────────────
     // UPDATE
     // ─────────────────────────────────────
-
-    async update(id: string, item: Partial<StockDataFromDB>): Promise<StockDataFromDB | null> {
+    async update(id: string, item: Partial<UserDataFromDB>): Promise<UserDataFromDB | null> {
         try {
-            const found = await StockForDB.findByPk(id);
+            const found = await UserFromDB.findByPk(id);
             if (!found) return null;
             const updated = await found.update(item);
-            return updated.dataValues as StockDataFromDB;
+            return updated.dataValues as UserDataFromDB;
         } catch (error) {
             return null;
         }
@@ -67,14 +64,13 @@ export class StockCrudPostgres implements StockCrudRepo {
     // ─────────────────────────────────────
     // DELETE
     // ─────────────────────────────────────
-
     async softDelete(id: string): Promise<boolean> {
         throw new Error("softDelete - Method not implemented yet.");
     }
 
     async destroy(id: string): Promise<boolean> {
         try {
-            const deleted = await StockForDB.destroy({ where: { uuid: id } });
+            const deleted = await UserFromDB.destroy({ where: { uuid: id } });
             return deleted > 0;
         } catch (error) {
             return false;

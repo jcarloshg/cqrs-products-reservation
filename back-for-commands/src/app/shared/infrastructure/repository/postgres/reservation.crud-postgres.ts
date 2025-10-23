@@ -30,6 +30,14 @@ export class ReservationCrudPostgres implements ReservationCrudRepo {
             return null;
         }
     }
+    async findByFields(fields: Partial<ReservationDataFromDB>): Promise<ReservationDataFromDB | null> {
+        try {
+            const found = await ReservationForDB.findOne({ where: fields });
+            return found ? (found.dataValues as ReservationDataFromDB) : null;
+        } catch (error) {
+            return null;
+        }
+    }
     async update(
         id: string,
         item: Partial<ReservationDataFromDB>

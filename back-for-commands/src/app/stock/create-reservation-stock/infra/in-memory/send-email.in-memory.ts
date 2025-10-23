@@ -1,4 +1,4 @@
-import { SendEmailService, SendEmailServiceProps } from "@/app/stock/create-reservation-stock/domain/services/email/send-email.service";
+import { SendEmailService, SendEmailServiceProps } from "@/app/shared/domain/services/send-email.service";
 
 export class SendEmailInMemory implements SendEmailService {
 

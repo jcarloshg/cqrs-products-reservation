@@ -25,7 +25,7 @@ export class StockCrudRepo implements CrudRepository<StockDataFromDB> {
     findById(id: string): Promise<StockDataFromDB | null> {
         throw new Error("Method not implemented.");
     }
-    findByFields(fields: Record<string, string>): Promise<StockDataFromDB | null> {
+    findByFields(fields: Partial<StockDataFromDB>): Promise<StockDataFromDB | null> {
         throw new Error("Method not implemented.");
     }
     // ─────────────────────────────────────

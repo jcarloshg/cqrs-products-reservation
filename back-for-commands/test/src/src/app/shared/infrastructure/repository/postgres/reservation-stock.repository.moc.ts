@@ -4,6 +4,10 @@ import { ReservationAttributes } from "@/app/shared/infrastructure/repository/po
 export class ReservationStockRepositoryMoc
     implements CrudRepository<ReservationAttributes> {
     constructor() { }
+    
+    findByFields(fields: Partial<ReservationAttributes>): Promise<ReservationAttributes | null> {
+        throw new Error("Method not implemented.");
+    }
 
     async create(data: ReservationAttributes): Promise<ReservationAttributes> {
         return data;

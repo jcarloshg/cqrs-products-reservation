@@ -1,27 +1,15 @@
 import { DomainEvent } from "./domain-event";
-// export abstract class AggregateRoot {
-//   private domainEvents: Array<DomainEvent>;
-
-//   constructor() {
-//     this.domainEvents = [];
-//   }
-
-//   pullDomainEvents(): Array<DomainEvent> {
-//     const domainEvents = this.domainEvents.slice();
-//     this.domainEvents = [];
-//     return domainEvents;
-//   }
-
-//   record(event: DomainEvent): void {
-//     this.domainEvents.push(event);
-//   }
-// }
 
 export class AggregateRoot {
+  private readonly _uuid = crypto.randomUUID();
   private domainEvents: Array<DomainEvent>;
 
   constructor() {
     this.domainEvents = [];
+  }
+
+  public getAggregateRootUUID(): string {
+    return this._uuid;
   }
 
   public pullDomainEvents(): Array<DomainEvent> {

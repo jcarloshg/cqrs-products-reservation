@@ -13,6 +13,10 @@ export class CrudRepository<T> {
         throw new Error("CrudRepository[findById] - Method not implemented.");
     }
 
+    findByFields(fields: Partial<T>): Promise<T | null> {
+        throw new Error("Method not implemented.");
+    }
+
     update(id: string, item: Partial<T>): Promise<T | null> {
         throw new Error("CrudRepository[update] - Method not implemented.");
     }
