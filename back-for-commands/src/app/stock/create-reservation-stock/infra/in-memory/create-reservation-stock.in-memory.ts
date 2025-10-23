@@ -1,9 +1,9 @@
-import { CreateReservationStockRepository } from "@/app/stock/create-reservation-stock/domain/repository/create-reservation-stock.repository";
+import { CreateReservationStockRepository } from '@/app/stock/create-reservation-stock/domain/services/repository/create-reservation-stock.repository';
+
 import { OpenFilesInMemory } from '@/app/shared/infrastructure/repository/in-memory/open-files.in-memory';
 import { ReservationStock } from "../../domain/entities/reservation-stock.entity";
 
-export class CreateReservationStockInMemory
-    implements CreateReservationStockRepository {
+export class CreateReservationStockInMemory implements CreateReservationStockRepository {
 
     private readonly _openFilesInMemory: OpenFilesInMemory;
 

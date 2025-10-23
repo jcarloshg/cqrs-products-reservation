@@ -1,14 +1,27 @@
+import z from "zod";
+
 import { DomainEvent } from "@/app/shared/domain/domain-events/domain-event";
-import { ReservationStockProps } from "@/app/stock/create-reservation-stock/domain/entities/reservation-stock.entity";
+import { ReservationStatus } from "@/app/shared/domain/model/ReservationStatus";
+
+const DomainEventPropsSchema = z.object({
+    uuid: z.uuid(),
+    ownerUuid: z.uuid(),
+    productId: z.uuid(),
+    quantity: z.number().min(1),
+    status: z.enum([ReservationStatus.PENDING]),
+    expiresAt: z.date().min(new Date()),
+});
+export type DomainEventProps = z.infer<typeof DomainEventPropsSchema>;
 
 export class CreateReservationStockDomainEvent extends DomainEvent {
 
     public static readonly eventName: string = "RESERVATION-STOCK.CREATED";
 
-    public readonly props: ReservationStockProps;
+    public readonly props: DomainEventProps;
 
-    constructor(props: ReservationStockProps) {
-        super(props.uuid);
-        this.props = props;
+    constructor(props: DomainEventProps) {
+        const validatedProps = DomainEventPropsSchema.parse(props);
+        super(validatedProps.uuid);
+        this.props = validatedProps;
     }
 }

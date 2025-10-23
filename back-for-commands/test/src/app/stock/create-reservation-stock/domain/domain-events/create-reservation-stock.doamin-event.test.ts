@@ -6,9 +6,9 @@ describe("create-reservation-stock.doamin-event.ts", () => {
     it("should create an event with correct props and uuid", () => {
         // Arrange
         const props: ReservationStockProps = {
-            uuid: "test-uuid",
-            ownerUuid: "owner-uuid",
-            productId: "prod-1",
+            uuid: crypto.randomUUID(),
+            ownerUuid: crypto.randomUUID(),
+            productId: crypto.randomUUID(),
             quantity: 10,
             status: ReservationStatus.PENDING,
             expiresAt: new Date(Date.now() + 10000),
@@ -18,7 +18,7 @@ describe("create-reservation-stock.doamin-event.ts", () => {
         const event = new CreateReservationStockDomainEvent(props);
 
         // Assert
-        expect(event.props).toBe(props);
+        expect(event.props).toStrictEqual(props);
         expect(event.aggregateId).toBe(props.uuid);
         expect(CreateReservationStockDomainEvent.eventName).toBe("RESERVATION-STOCK.CREATED");
     });
