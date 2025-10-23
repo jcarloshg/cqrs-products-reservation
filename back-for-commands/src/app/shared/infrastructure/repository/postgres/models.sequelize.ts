@@ -4,10 +4,10 @@ import { PostgresManager } from "@/app/shared/infrastructure/repository/postgres
 
 
 // Get the sequelize instance
-const sequelize = PostgresManager.getInstance().getSequelize();
+export const sequelize = PostgresManager.getInstance().getSequelize();
 
 // User model interfaces
-interface UserAttributes {
+export interface UserAttributes {
     uuid: string;
     username: string;
     password: string;
@@ -16,7 +16,7 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, "uuid"> { }
 
 // Product model interfaces
-interface ProductAttributes {
+export interface ProductAttributes {
     uuid: string;
     name: string;
     description: string | null;
@@ -27,7 +27,7 @@ interface ProductCreationAttributes
     extends Optional<ProductAttributes, "uuid"> { }
 
 // Stock model interfaces
-interface StockAttributes {
+export interface StockAttributes {
     uuid: string;
     product_uuid: string;
     available_quantity: number;
