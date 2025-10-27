@@ -10,8 +10,7 @@ export class CreateReservationStockCommand implements Command {
             ...props,
             expiresAt: props.expiresAt ? new Date(props.expiresAt) : undefined,
         });
-        if (parsed.success === false)
-            throw new OwnZodError("CreateReservationStockCommand", parsed.error);
+        if (parsed.success === false) throw new OwnZodError("CreateReservationStockCommand", parsed.error);
         this.createReservationStockCommandProps = parsed.data;
     }
 

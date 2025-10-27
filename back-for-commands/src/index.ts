@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { enviromentVariables } from "./app/shared/infrastructure/utils/enviroment-variables";
 import { reservationsStockRoute } from "./presentation/routes/reservations-stock.route";
+import { healthRoute } from "./presentation/routes/health.route";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(
 // add routes here
 // ─────────────────────────────────────
 reservationsStockRoute(app);
+healthRoute(app);
 
 // ─────────────────────────────────────
 // Start server

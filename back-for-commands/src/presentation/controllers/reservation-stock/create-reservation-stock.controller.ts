@@ -9,12 +9,11 @@ export const createReservationStockController = async (
     try {
         const createReservationStockApplication = new CreateReservationStockApplication();
         const response = await createReservationStockApplication.run({
-            body: req.body,
+            body: req.body ?? {},
         });
         res.status(response.code).json(response);
     } catch (error) {
-        const response =
-            CustomResponse.internalServerError().toCommandHandlerResp();
+        const response = CustomResponse.internalServerError().toCommandHandlerResp();
         res.status(response.code).json(response);
     }
 };
