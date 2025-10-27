@@ -49,13 +49,13 @@ export class ReplenishStockUseCase {
 
             // 4. System publishes StockReplenishedEvent
             const domainEvents = this.stockAggregateRoot.pullDomainEvents();
-            console.log(`domainEvents: `, domainEvents);
             await this._eventPublisher.publishAll(domainEvents);
 
             // 5. System updates read models
+            const stockUpdated = this.stockAggregateRoot.entityProps();
             const resp = await this.stockRepository.update(
-                stock.uuid,
-                { available_quantity: stock.available_quantity }
+                stockUpdated.uuid,
+                { available_quantity: stockUpdated.available_quantity }
             );
             if (!resp) {
                 const response = CustomResponse.internalServerError();
