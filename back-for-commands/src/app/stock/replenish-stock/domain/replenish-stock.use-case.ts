@@ -8,8 +8,8 @@ import { EventPublisher } from "@/app/shared/domain/domain-events/event-publishe
 export class ReplenishStockUseCase {
 
     private readonly stockRepository: StockCrudRepo;
-    private stockAggregateRoot: StockAggregateRoot;
     private readonly _eventPublisher: EventPublisher;
+    private stockAggregateRoot: StockAggregateRoot;
 
     constructor(
         stockRepository: StockCrudRepo,
