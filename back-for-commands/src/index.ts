@@ -27,10 +27,15 @@ healthRoute(app);
 // ─────────────────────────────────────
 // Start server
 // ─────────────────────────────────────
+
 const PORT = enviromentVariables.port;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📖 Environment: ${enviromentVariables.nodeEnv}`);
 });
+
+// Initialize WebSocket server
+import { initWebSocket } from "./presentation/routes/websocket-instance";
+initWebSocket(server);
 
 export default app;
