@@ -5,11 +5,9 @@ import { OwnZodError } from "@/app/shared/domain/errors/zod.error";
 import { GetStockAvailabilityCommand } from "../domain/command/get-stock-availability.command";
 
 export type RequestProps = {
-    body: {
-        product: {
-            product_uuid: string;
-        }
-    };
+    product: {
+        product_uuid: string;
+    }
 };
 
 export class GetStockAvailabilityApplication {
@@ -19,7 +17,7 @@ export class GetStockAvailabilityApplication {
     public async run(props: RequestProps): Promise<CustomResponse<any>> {
         try {
 
-            const command = new GetStockAvailabilityCommand(props.body);
+            const command = new GetStockAvailabilityCommand(props);
 
             // ─────────────────────────────────────
             // init services

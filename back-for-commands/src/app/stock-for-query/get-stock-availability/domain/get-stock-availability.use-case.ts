@@ -22,7 +22,7 @@ export class GetStockAvailabilityUseCase {
 
             // 1. System queries stock read model by product ID
             const stock = await this.stockRepository.findByFields({
-                product_uuid: (command as any).product_uuid,
+                product_uuid: command.getProductUuid(),
             });
             if (!stock) {
                 const response = CustomResponse.notFound("Stock record not found for product.");

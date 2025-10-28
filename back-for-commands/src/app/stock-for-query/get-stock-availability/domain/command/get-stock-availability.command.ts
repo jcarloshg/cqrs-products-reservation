@@ -24,4 +24,8 @@ export class GetStockAvailabilityCommand implements Command {
     public static get COMMAND_NAME(): string {
         return "UC-004.GET_STOCK_AVAILABILITY";
     }
+
+    getProductUuid(): string | undefined {
+        return this.props.product.product_uuid;
+    }
 }
