@@ -2,6 +2,11 @@
 
 A production-ready inventory management system implementing **CQRS (Command Query Responsibility Segregation)** pattern with **Clean Architecture** principles. This system handles stock reservations, inventory management, and provides real-time stock availability queries for e-commerce platforms.
 
+- 🏗️ Clean Architecture, 🧩 CQRS, 🧑‍💻 Domain-Driven Design (DDD), 📦 Event-Driven Architecture, 🗄️ Repository Pattern, ✅ Validation (Zod), 🚨 Exception Handling
+- 🐳 Docker & Docker Compose, 🐘 PostgreSQL, 🧪 Jest (unit, integration, acceptance), 🔥 Nodemon, 🟦 ts-node, 🟦 TypeScript, ⚡ Express.js, 🔗 Sequelize ORM
+- 📦 Command & Query separation, 📢 Domain Events, 🔄 Optimistic Concurrency, ⏱️ Auto-expiring Reservations, 📊 Real-time Stock Availability
+- 🧪 Unit, Integration, and Acceptance Testing, 🧰 Scripts for data generation, 📝 Extensive documentation
+
 ## 📋 Table of Contents
 
 - [Overview](#overview)
@@ -16,6 +21,7 @@ A production-ready inventory management system implementing **CQRS (Command Quer
 - [Database Schema](#database-schema)
 - [Development](#development)
 - [Testing](#testing)
+
 
 ## 🎯 Overview
 
